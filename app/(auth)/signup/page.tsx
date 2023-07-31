@@ -43,7 +43,7 @@ const Signup = () => {
 
         <RadioGroup
           defaultValue="option-one"
-          className="grid gap-4 md:gap-6 xl:gap-8 md:grid-cols-2 my-12"
+          className="grid gap-4 md:gap-6 xl:gap-8 md:grid-cols-2 my-6 md:my-12"
         >
           <div
             className={`relative p-4 min-h-32 w-full rounded-2xl ${
@@ -85,7 +85,7 @@ const Signup = () => {
         >
           {buttonText}
         </Button>
-        <div className="flex text-sm md:text-base space-x-1 justify-center mt-4">
+        <div className="flex text-base space-x-1 justify-center mt-4">
           <p>Already have an account?</p>
           <Link href="/login" className="text-[#6272B9] underline">
             Log in

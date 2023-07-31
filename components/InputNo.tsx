@@ -5,9 +5,15 @@ import { Label } from "./ui/label";
 
 interface InputValue {
   onValueChange: (value: string) => void;
+  onHandleBlur: (value: string) => void;
+  phoneNoValidity: boolean;
 }
 
-export const InputNo = ({ onValueChange }: InputValue) => {
+export const InputNo = ({
+  onValueChange,
+  onHandleBlur,
+  phoneNoValidity,
+}: InputValue) => {
   const [selectedCode, setSelectedCode] = useState("+234");
   const [showCodes, setShowCodes] = useState(false);
   const codes = useMemo(() => countryCode, []);
@@ -19,7 +25,11 @@ export const InputNo = ({ onValueChange }: InputValue) => {
           {" "}
           Whatsapp Number
         </Label>
-        <div className="relative flex max-w-full gap-2 py-1 pl-3 mt-2 bg-[#ecebf382] border rounded-md cursor-pointer outline-0 border-secondary-darkGray">
+        <div
+          className={`relative flex max-w-full gap-2 py-1 pl-3 mt-2 bg-[#ecebf382] border rounded-md cursor-pointer outline-0 border-secondary-darkGray ${
+            phoneNoValidity ? "bg-[#fddddd]" : ""
+          }`}
+        >
           <div
             className="flex items-center my-2 focus:border focus:border-solid w-fit"
             onClick={() => {
@@ -61,13 +71,16 @@ export const InputNo = ({ onValueChange }: InputValue) => {
             onChange={(e) => {
               onValueChange(`${selectedCode}${e.target.value}`);
             }}
+            onBlur={() => onHandleBlur("tel")}
             required
             type="tel"
             id="tel"
             name="tel"
             maxLength={11}
             placeholder="Whatsapp number"
-            className="flex-auto w-auto min-w-0 bg-transparent text-sm md:text-base focus-within:outline-none focus-within:cursor-text placeholder:text-ellipsis"
+            className={`flex-auto w-auto min-w-0 bg-transparent text-sm md:text-base focus-within:outline-none focus-within:cursor-text placeholder:text-ellipsis ${
+              phoneNoValidity ? "bg-[#fddddd]" : ""
+            }`}
           />
         </div>
       </fieldset>

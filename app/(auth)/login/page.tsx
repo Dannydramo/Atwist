@@ -102,10 +102,10 @@ const Login = () => {
       <div className="bg-white my-4 h-[100%] sm:min-h-[calc(90vh-80px)] rounded-xl p-4 sm:p-8 md:p-12">
         <div className="space-y-8 md:space-y-0 md:space-x-12 flex-col items-center flex md:flex-row justify-between">
           <div className="bg-[#6272B9] flex flex-col items-center justify-center p-4 h-[300px] sm:min-h-[60vh] w-full rounded-xl">
-            <h1 className="text-2xl sm:text-4xl leading-7 md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white">
+            <h1 className="text-4xl leading-7 md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white">
               Welcome
             </h1>
-            <h1 className="text-2xl sm:text-4xl leading-7 md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white">
+            <h1 className="text-4xl leading-7 md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white">
               Back!
             </h1>
           </div>
@@ -114,8 +114,8 @@ const Login = () => {
               <Input
                 type="email"
                 name="email"
-                className={`w-full my-6 h-12 bg-[#ecebf382] text-sm md:text-base ${
-                  inputValidity.email ? "bg-red-500" : ""
+                className={`w-full my-6 h-12 bg-[#ecebf382] text-base ${
+                  inputValidity.email ? "bg-[#fddddd]" : ""
                 }`}
                 placeholder="Enter Your Email"
                 value={signInDetail.email}
@@ -125,8 +125,8 @@ const Login = () => {
               <Input
                 type="password"
                 name="password"
-                className={`w-full my-6 h-12 bg-[#ecebf382] text-sm md:text-base ${
-                  inputValidity.password ? "bg-red-500" : ""
+                className={`w-full my-6 h-12 bg-[#ecebf382] text-base ${
+                  inputValidity.password ? "bg-[#fddddd]" : ""
                 }`}
                 placeholder="Enter Your Password"
                 value={signInDetail.password}
@@ -136,14 +136,14 @@ const Login = () => {
 
               <Button
                 type="submit"
-                className="bg-[#6272B9] text-white text-sm md:text-base w-full text-center"
+                className="bg-[#6272B9] text-white text-base w-full text-center"
                 disabled={inputValidity.email || inputValidity.password}
               >
                 {loading ? "Logging in.." : "Login"}
               </Button>
             </form>
 
-            <div className="mt-2 text-sm md:text-base justify-center space-x-1 flex">
+            <div className="mt-4 text-base justify-center space-x-2 flex">
               <p>{"Don't"} have an account? </p>
               <Link href="/signup" className="underline text-[#6272B9]">
                 Signup

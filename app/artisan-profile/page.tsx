@@ -43,49 +43,47 @@ const ArtisanProfile = () => {
     getUser();
   }, [router]);
 
-  const handleNavigate = () => {
-    router.push(`/edit-profile?id=${user?.id}`);
-  };
-
   return (
     <section className="w-[95%] sm:w-[90%] md:w-[85%] lg:w-[75%] mx-auto max-w-[1600px]">
       <div className="bg-white my-4 h-[100%] sm:min-h-[calc(90vh-80px)] rounded-xl p-4 sm:p-8 md:p-12">
         {user ? (
           <div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-1 md:space-x-4">
               <ProfileUpload userId={user?.id} />
               <div>
                 <p className="text-lg sm:text-xl md:text-2xl font-semibold mb-2">
                   {user?.user_metadata?.full_name}
                 </p>
-                <p className="mb-2 text-sm sm:text-base md:text-lg ">
+                <p className="mb-2 text-base md:text-lg ">
                   {userDetails?.loaction}
                 </p>
               </div>
             </div>
-            <div className="flex my-4 justify-between">
-              <div className="text-sm flex flex-col space-y-2 md:text-base">
-                {/* <p>{user?.email}</p> */}
+            <div className="flex flex-col md:flex-row my-4 md:justify-between">
+              <div className="flex flex-col space-y-1 text-base">
                 <p>{user?.user_metadata?.occupation_name}</p>
-                {/* <p>{user?.user_metadata?.phone}</p> */}
                 <a href={`mailto:${user?.email}`}>{user?.email}</a>
                 <a href={`tel:${user?.user_metadata?.phone}`}>
                   {user?.user_metadata?.phone}
                 </a>
               </div>
-              <div className="">
+              <div className="flex flex-col md:flex-row md:space-x-3 space-y-3 md:space-y-0">
                 <Button
-                  onClick={handleNavigate}
-                  className="border text-sm sm:text-base border-[#6272B9] bg-transparent my-2 text-black outline-none hover:bg-[#6272B9] hover:text-white duration-500 ease-in rounded-[20px] text-center"
+                  onClick={() => {
+                    router.push(`/edit-profile?id=${user?.id}`);
+                  }}
+                  className="border text-base border-[#6272B9] bg-transparent my-2 text-black outline-none hover:bg-[#6272B9] hover:text-white duration-500 ease-in rounded-[20px] text-center"
                 >
                   Edit Profile
                 </Button>
-                <Link
-                  href="/active-contract"
-                  className="border text-sm sm:text-base border-[#6272B9] bg-transparent my-2 text-black outline-none hover:bg-[#6272B9] hover:text-white duration-500 ease-in rounded-[20px] text-center"
+                <Button
+                  onClick={() => {
+                    router.push(`/active-contract?id=${user?.id}`);
+                  }}
+                  className="border text-base border-[#6272B9] bg-transparent my-2 text-black outline-none hover:bg-[#6272B9] hover:text-white duration-500 ease-in rounded-[20px] text-center"
                 >
                   Active Contract
-                </Link>
+                </Button>
               </div>
             </div>
             <div className="my-4">
@@ -101,10 +99,10 @@ const ArtisanProfile = () => {
           </div>
         ) : (
           <div>
-            <div className="flex items-center mb-4 space-x-4">
+            <div className="flex items-center mb-4 space-x-1 md:space-x-4">
               <Skeleton
                 circle={true}
-                containerClassName="w-[50px] h-[50px] sm:w-[70px] h-[70px] md:w-[100px] md:h-[100px]"
+                containerClassName="w-[50px] h-[40px] sm:w-[70px] h-[60px] md:w-[100px] md:h-[100px]"
                 height="inherit"
                 width="inherit"
               />

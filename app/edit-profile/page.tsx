@@ -99,13 +99,13 @@ const EditProfile = () => {
 
   return (
     <>
-      <section className="w-[95%] sm:w-[90%] md:w-[85%] lg:w-[75%] mx-auto max-w-[1600px]">
+      <section className="w-[95%] sm:w-[80%] md:w-[75%] lg:w-[65%] mx-auto max-w-[1600px]">
         <div className="bg-white my-4 h-[100%] sm:min-h-[calc(90vh-80px)] rounded-xl p-4 sm:p-8 md:p-12">
           <ProfileUpload userId={userId} edit={editProfileImage} />
           <Textarea
             value={updateProfileDetails.descriptionText}
             placeholder="Enter bio"
-            className="max-w-[350px] text-sm md:text-base my-3"
+            className="max-w-[350px] text-base my-3"
             onChange={(e) => {
               setUpdateProfileDetails({
                 ...updateProfileDetails,
@@ -115,7 +115,7 @@ const EditProfile = () => {
           />
           <Input
             value={updateProfileDetails.locationText}
-            className="max-w-[350px] text-sm md:text-base my-3 border-t-none outline-none"
+            className="text-base my-3 border-t-none outline-none"
             placeholder="Enter location"
             onChange={(e) => {
               setUpdateProfileDetails({
@@ -124,11 +124,11 @@ const EditProfile = () => {
               });
             }}
           />
-          <div className="text-sm md:text-base">
+          <div className="text-base">
             Link to social media accounts
             <Input
               value={updateProfileDetails.instagramLink}
-              className="max-w-[350px] text-sm md:text-base my-3 border-t-none outline-none"
+              className="text-base my-3 border-t-none outline-none"
               placeholder="Instagram"
               onChange={(e) => {
                 setUpdateProfileDetails({
@@ -139,7 +139,7 @@ const EditProfile = () => {
             />
             <Input
               value={updateProfileDetails.twitterLink}
-              className="max-w-[350px] text-sm md:text-base my-3 border-t-none outline-none"
+              className="text-base my-3 border-t-none outline-none"
               placeholder="Twitter"
               onChange={(e) => {
                 setUpdateProfileDetails({
@@ -150,7 +150,7 @@ const EditProfile = () => {
             />
             <Input
               value={updateProfileDetails.linkedinLink}
-              className="max-w-[350px] text-sm md:text-base my-3 border-t-none outline-none"
+              className="max-w-[350px] text-base my-3 border-t-none outline-none"
               placeholder="LinkedIn"
               onChange={(e) => {
                 setUpdateProfileDetails({
@@ -161,7 +161,7 @@ const EditProfile = () => {
             />
             <Input
               value={updateProfileDetails.facebookLink}
-              className="max-w-[350px] my-3 border-t-none text-sm md:text-base outline-none"
+              className="max-w-[350px] my-3 border-t-none text-base outline-none"
               placeholder="Facebook"
               onChange={(e) => {
                 setUpdateProfileDetails({
@@ -173,7 +173,7 @@ const EditProfile = () => {
           </div>
           <Button
             type="button"
-            className="bg-[#6272B9] text-sm md:text-base mt-4 text-white py-1 px-6 rounded-md text-center"
+            className="bg-[#6272B9] text-base mt-4 text-white py-1 px-6 rounded-md text-center"
             onClick={handleUpdate}
           >
             Update Profile

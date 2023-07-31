@@ -122,10 +122,10 @@ const ArtisanSignup = () => {
   };
 
   const handleValueChange = (value: string) => {
-    setRegisterArtisanDetail({
-      ...registerArtisanDetail,
+    setRegisterArtisanDetail((prevState) => ({
+      ...prevState,
       phoneNo: value,
-    });
+    }));
 
     // Reset inputValidity to false when input value changes
     setInputValidity((prevState) => ({
@@ -133,7 +133,6 @@ const ArtisanSignup = () => {
       phoneNo: false,
     }));
   };
-
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     inputField: string
@@ -164,7 +163,7 @@ const ArtisanSignup = () => {
         ...prevState,
         password: password.trim() === "",
       }));
-    } else if (inputField === "phoneNo") {
+    } else if (inputField === "tel") {
       setInputValidity((prevState) => ({
         ...prevState,
         phoneNo: phoneNo.trim() === "",
@@ -190,7 +189,7 @@ const ArtisanSignup = () => {
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
               Profile review
             </h1>
-            <ul className="list-disc space-y-4 text-sm md:text-base lg:text-lg">
+            <ul className="list-disc space-y-4 text-base lg:text-lg">
               <li>
                 Artisan must upload a clear picture of proof of occupation.
               </li>
@@ -227,14 +226,14 @@ const ArtisanSignup = () => {
             </h1>
             <form action="" onSubmit={handleRegister}>
               <div className="grid w-full my-6 items-center gap-1.5">
-                <Label htmlFor="fullname" className="text-sm md:text-base">
+                <Label htmlFor="fullname" className="text-base">
                   Full Name
                 </Label>
                 <Input
                   type="text"
                   name="fullName"
-                  className={`w-full h-12 bg-[#ecebf382] text-sm md:text-base ${
-                    inputValidity.fullName ? "bg-red-500" : ""
+                  className={`w-full h-12 bg-[#ecebf382] text-base ${
+                    inputValidity.fullName ? "bg-[#fddddd]" : ""
                   }`}
                   placeholder="Enter your full name"
                   value={registerArtisanDetail.fullName}
@@ -243,14 +242,14 @@ const ArtisanSignup = () => {
                 />
               </div>
               <div className="grid w-full my-6 items-center gap-1.5">
-                <Label htmlFor="email" className="text-sm md:text-base">
+                <Label htmlFor="email" className="text-base">
                   Email Address
                 </Label>
                 <Input
                   type="email"
                   name="email"
-                  className={`w-full h-12 bg-[#ecebf382] text-sm md:text-base ${
-                    inputValidity.email ? "bg-red-500" : ""
+                  className={`w-full h-12 bg-[#ecebf382] text-base ${
+                    inputValidity.email ? "bg-[#fddddd]" : ""
                   }`}
                   placeholder="Enter your email address"
                   value={registerArtisanDetail.email}
@@ -258,9 +257,13 @@ const ArtisanSignup = () => {
                   onBlur={() => handleInputBlur("email")}
                 />
               </div>
-              <InputNo onValueChange={handleValueChange} />
+              <InputNo
+                onValueChange={handleValueChange}
+                onHandleBlur={handleInputBlur}
+                phoneNoValidity={inputValidity.phoneNo}
+              />
               <div className="w-full">
-                <Label htmlFor="occupation" className="text-sm md:text-base">
+                <Label htmlFor="occupation" className="text-base">
                   Occupation
                 </Label>
                 <Popover open={open} onOpenChange={setOpen}>
@@ -269,8 +272,8 @@ const ArtisanSignup = () => {
                       variant="outline"
                       role="combobox"
                       aria-expanded={open}
-                      className={`w-full h-12 justify-between text-sm md:text-base bg-[#ecebf382] ${
-                        inputValidity.occupation ? "bg-red-500" : ""
+                      className={`w-full h-12 justify-between text-base bg-[#ecebf382] ${
+                        inputValidity.occupation ? "bg-[#fddddd]" : ""
                       }`}
                     >
                       {value
@@ -319,14 +322,14 @@ const ArtisanSignup = () => {
                 </Popover>
               </div>
               <div className="grid w-full my-6 items-center gap-1.5">
-                <Label htmlFor="password" className="text-sm md:text-base">
+                <Label htmlFor="password" className="text-base">
                   Password
                 </Label>
                 <Input
                   type="password"
                   name="password"
-                  className={`w-full h-12 text-sm md:text-base bg-[#ecebf382] ${
-                    inputValidity.password ? "bg-red-500" : ""
+                  className={`w-full h-12 text-base bg-[#ecebf382] ${
+                    inputValidity.password ? "bg-[#fddddd]" : ""
                   }`}
                   placeholder="Enter your password"
                   value={registerArtisanDetail.password}
@@ -335,17 +338,14 @@ const ArtisanSignup = () => {
                 />
               </div>
               <div className="grid w-full my-6 items-center gap-1.5">
-                <Label
-                  htmlFor="confirmPassword"
-                  className="text-sm md:text-base"
-                >
+                <Label htmlFor="confirmPassword" className="text-base">
                   Confirm Password
                 </Label>
                 <Input
                   type="password"
                   name="confirmPassword"
-                  className={`w-full h-12 text-sm md:text-base bg-[#ecebf382] ${
-                    inputValidity.password ? "bg-red-500" : ""
+                  className={`w-full h-12 text-base bg-[#ecebf382] ${
+                    inputValidity.password ? "bg-[#fddddd]" : ""
                   }`}
                   placeholder="Confirm your password"
                   value={confirmPassword}
@@ -354,7 +354,7 @@ const ArtisanSignup = () => {
               </div>
               <Button
                 type="submit"
-                className="bg-[#6272B9] text-sm md:text-base text-white w-full text-center"
+                className="bg-[#6272B9] text-base text-white w-full text-center"
               >
                 Submit
               </Button>

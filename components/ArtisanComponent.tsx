@@ -110,12 +110,10 @@ const ArtisanComponent: React.FC<ArtisansProps> = ({
                 </div>
               )}
               <div className="space-y-1">
-                <p className="text-base sm:text-lg md:text-xl font-semibold">
+                <p className="text-lg md:text-xl font-semibold">
                   {artisan.full_name}
                 </p>
-                <p className="text-sm md:text-base">
-                  {artisan.occupation_name}
-                </p>
+                <p className="text-base">{artisan.occupation_name}</p>
               </div>
             </div>
           </div>

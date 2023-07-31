@@ -132,7 +132,7 @@ const Artisans = () => {
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="min-w-[300px] p-0 max-h-[10rem] overflow-y-scroll">
+              <PopoverContent className="p-0 max-h-[10rem] overflow-y-scroll">
                 <Command>
                   <CommandInput placeholder="Search for Artisan..." />
                   <CommandEmpty>No Artisan found.</CommandEmpty>
@@ -166,7 +166,7 @@ const Artisans = () => {
               <div className="flex items-center mb-4 space-x-4" key={skelValue}>
                 <Skeleton
                   circle={true}
-                  containerClassName="w-[50px] h-[50px] sm:w-[70px] h-[70px] md:w-[100px] md:h-[100px]"
+                  containerClassName="w-[50px] h-[40px] sm:w-[70px] h-[70px] md:w-[100px] md:h-[100px]"
                   height="inherit"
                   width="inherit"
                 />

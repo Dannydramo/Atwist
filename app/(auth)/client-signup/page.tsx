@@ -51,9 +51,15 @@ const ClientSignUp = () => {
           phoneNo: phoneNo.trim() === "",
         }));
       } else if (password !== confirmPassword) {
-        console.log("Passwords must match");
+        toast({
+          variant: "destructive",
+          description: "Passsord does not match",
+        });
       } else if (password.toLowerCase() === "password") {
-        console.log("Password cannot be 'password'");
+        toast({
+          variant: "destructive",
+          description: "Password cannot be password",
+        });
       } else {
         const {
           data: { user },
@@ -108,10 +114,10 @@ const ClientSignUp = () => {
   };
 
   const handleValueChange = (value: string) => {
-    setRegisterClientDetail({
-      ...registerClientDetail,
+    setRegisterClientDetail((prevState) => ({
+      ...prevState,
       phoneNo: value,
-    });
+    }));
 
     // Reset inputValidity to false when input value changes
     setInputValidity((prevState) => ({
@@ -138,21 +144,26 @@ const ClientSignUp = () => {
   };
 
   const handleInputBlur = (inputField: string) => {
-    const { fullName, password, phoneNo } = registerClientDetail;
+    const { fullName, password, phoneNo, email } = registerClientDetail;
     if (inputField === "fullName") {
       setInputValidity((prevState) => ({
         ...prevState,
         fullName: fullName.trim() === "",
       }));
+    } else if (inputField === "tel") {
+      setInputValidity((prevState) => ({
+        ...prevState,
+        phoneNo: phoneNo.trim() === "",
+      }));
+    } else if (inputField === "email") {
+      setInputValidity((prevState) => ({
+        ...prevState,
+        email: email.trim() === "",
+      }));
     } else if (inputField === "password") {
       setInputValidity((prevState) => ({
         ...prevState,
         password: password.trim() === "",
-      }));
-    } else if (inputField === "phoneNo") {
-      setInputValidity((prevState) => ({
-        ...prevState,
-        phoneNo: phoneNo.trim() === "",
       }));
     }
   };
@@ -165,7 +176,7 @@ const ClientSignUp = () => {
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
               Profile Review
             </h1>
-            <ul className="list-disc text-sm md:text-base space-y-4 lg:text-lg">
+            <ul className="list-disc text-base space-y-4 lg:text-lg">
               <li>
                 Ensure the information you provide is accurate and up-to-date.
               </li>
@@ -197,14 +208,14 @@ const ClientSignUp = () => {
             </h1>
             <form action="" onSubmit={handleClientSubmit}>
               <div className="grid w-full my-6 items-center gap-1.5">
-                <Label htmlFor="fullName" className="text-sm md:text-base">
+                <Label htmlFor="fullName" className="text-base">
                   Full Name
                 </Label>
                 <Input
                   type="text"
                   name="fullName"
-                  className={`w-full text-sm md:text-base h-12 bg-[#ecebf382] ${
-                    inputValidity.fullName ? "bg-red-500" : ""
+                  className={`w-full text-base h-12 bg-[#ecebf382] ${
+                    inputValidity.fullName ? "bg-[#fddddd]" : ""
                   }`}
                   placeholder="Enter your full name"
                   value={registerClientDetail.fullName}
@@ -213,14 +224,14 @@ const ClientSignUp = () => {
                 />
               </div>
               <div className="grid w-full my-6 items-center gap-1.5">
-                <Label htmlFor="email" className="text-sm md:text-base">
+                <Label htmlFor="email" className="text-base">
                   Email Address
                 </Label>
                 <Input
                   type="email"
                   name="email"
-                  className={`w-full h-12 text-sm md:text-base bg-[#ecebf382] ${
-                    inputValidity.email ? "bg-red-500" : ""
+                  className={`w-full h-12 text-base bg-[#ecebf382] ${
+                    inputValidity.email ? "bg-[#fddddd]" : ""
                   }`}
                   placeholder="Enter your email address"
                   value={registerClientDetail.email}
@@ -229,16 +240,20 @@ const ClientSignUp = () => {
                 />
               </div>
 
-              <InputNo onValueChange={handleValueChange} />
+              <InputNo
+                onValueChange={handleValueChange}
+                onHandleBlur={handleInputBlur}
+                phoneNoValidity={inputValidity.phoneNo}
+              />
               <div className="grid w-full my-6 items-center gap-1.5">
-                <Label htmlFor="password" className="text-sm md:text-base">
+                <Label htmlFor="password" className="ext-base">
                   Password
                 </Label>
                 <Input
                   type="password"
                   name="password"
-                  className={`w-full text-sm md:text-base h-12 bg-[#ecebf382] ${
-                    inputValidity.password ? "bg-red-500" : ""
+                  className={`w-full text-base h-12 bg-[#ecebf382] ${
+                    inputValidity.password ? "bg-[#fddddd]" : ""
                   }`}
                   placeholder="Enter your password"
                   value={registerClientDetail.password}
@@ -247,17 +262,14 @@ const ClientSignUp = () => {
                 />
               </div>
               <div className="grid w-full my-6 items-center gap-1.5">
-                <Label
-                  htmlFor="confirmPassword"
-                  className="text-sm md:text-base"
-                >
+                <Label htmlFor="confirmPassword" className="text-base">
                   Confirm Password
                 </Label>
                 <Input
                   type="password"
                   name="confirmPassword"
-                  className={`w-full text-sm md:text-base h-12 bg-[#ecebf382] ${
-                    inputValidity.password ? "bg-red-500" : ""
+                  className={`w-full text-base h-12 bg-[#ecebf382] ${
+                    inputValidity.password ? "bg-[#fddddd]" : ""
                   }`}
                   placeholder="Confirm your password"
                   value={confirmPassword}
@@ -266,7 +278,7 @@ const ClientSignUp = () => {
               </div>
               <Button
                 type="submit"
-                className="bg-[#6272B9] text-sm md:text-base text-white w-full text-center"
+                className="bg-[#6272B9] text-base text-white w-full text-center"
               >
                 Submit
               </Button>
