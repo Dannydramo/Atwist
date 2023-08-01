@@ -44,7 +44,7 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({ artisanDetails, user }) => {
       client_name: user?.user_metadata?.full_name,
       contact_email: user?.email,
       phone: user?.user_metadata?.phone,
-      date: "2023-07-23",
+      date: new Date().toISOString(),
     };
     try {
       let bookedClient: any[] = [];

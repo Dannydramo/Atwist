@@ -79,7 +79,7 @@ const EditProfile = () => {
         loaction: locationText,
         twitter: twitterLink,
         linkedIn: linkedinLink,
-        facebook: facebookLink,
+        facebook : facebookLink,
         instagram: instagramLink,
       });
       if (error) {
