@@ -79,7 +79,7 @@ const EditProfile = () => {
         loaction: locationText,
         twitter: twitterLink,
         linkedIn: linkedinLink,
-        facebook : facebookLink,
+        facebook: facebookLink,
         instagram: instagramLink,
       });
       if (error) {
@@ -105,7 +105,7 @@ const EditProfile = () => {
           <Textarea
             value={updateProfileDetails.descriptionText}
             placeholder="Enter bio"
-            className="max-w-[350px] text-base my-3"
+            className="text-base my-3"
             onChange={(e) => {
               setUpdateProfileDetails({
                 ...updateProfileDetails,
@@ -150,7 +150,7 @@ const EditProfile = () => {
             />
             <Input
               value={updateProfileDetails.linkedinLink}
-              className="max-w-[350px] text-base my-3 border-t-none outline-none"
+              className="text-base my-3 border-t-none outline-none"
               placeholder="LinkedIn"
               onChange={(e) => {
                 setUpdateProfileDetails({
@@ -161,7 +161,7 @@ const EditProfile = () => {
             />
             <Input
               value={updateProfileDetails.facebookLink}
-              className="max-w-[350px] my-3 border-t-none text-base outline-none"
+              className="my-3 border-t-none text-base outline-none"
               placeholder="Facebook"
               onChange={(e) => {
                 setUpdateProfileDetails({

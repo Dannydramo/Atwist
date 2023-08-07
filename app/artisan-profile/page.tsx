@@ -67,12 +67,12 @@ const ArtisanProfile = () => {
                   {user?.user_metadata?.phone}
                 </a>
               </div>
-              <div className="flex flex-col md:flex-row md:space-x-3 space-y-3 md:space-y-0">
+              <div className="flex flex-col md:flex-row md:space-x-3 my-2 space-y-3 md:space-y-0">
                 <Button
                   onClick={() => {
                     router.push(`/edit-profile?id=${user?.id}`);
                   }}
-                  className="border text-base border-[#6272B9] bg-transparent my-2 text-black outline-none hover:bg-[#6272B9] hover:text-white duration-500 ease-in rounded-[20px] text-center"
+                  className="border text-base border-[#6272B9] bg-transparent text-black outline-none hover:bg-[#6272B9] hover:text-white duration-500 ease-in rounded-[20px] text-center"
                 >
                   Edit Profile
                 </Button>
@@ -80,7 +80,7 @@ const ArtisanProfile = () => {
                   onClick={() => {
                     router.push(`/active-contract?id=${user?.id}`);
                   }}
-                  className="border text-base border-[#6272B9] bg-transparent my-2 text-black outline-none hover:bg-[#6272B9] hover:text-white duration-500 ease-in rounded-[20px] text-center"
+                  className="border text-base border-[#6272B9] bg-transparent  text-black outline-none hover:bg-[#6272B9] hover:text-white duration-500 ease-in rounded-[20px] text-center"
                 >
                   Active Contract
                 </Button>
