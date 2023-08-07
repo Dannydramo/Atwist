@@ -17,11 +17,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-interface ArtisanActiveContractsProps {
-  artisanDetails: Artisan;
-}
-
-const ActiveContract: React.FC<ArtisanActiveContractsProps> = () => {
+const ActiveContract = () => {
   const searchParams = useSearchParams();
   const artisanId = searchParams.get("id") ?? "";
   const [bookedClients, setBookedClients] = useState<BookingData[]>([]);
