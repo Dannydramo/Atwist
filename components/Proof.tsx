@@ -77,7 +77,7 @@ const Proof = ({ userId, artisanFullName, isClient }: UserId) => {
               {artisanFullName} Proof Of Occupation
             </h1>
           ) : (
-            <h1 className="text-2xl sm:text-3xl font-semibold mb-2">
+            <h1 className="font-semibold mb-2 text-lg sm:text-xl md:text-2xl">
               Proof Of Occupation
             </h1>
           )}

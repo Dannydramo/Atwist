@@ -48,10 +48,10 @@ const ArtisanProfile = () => {
       <div className="bg-white my-4 h-[100%] sm:min-h-[calc(90vh-80px)] rounded-xl p-4 sm:p-8 md:p-12">
         {user ? (
           <div>
-            <div className="flex items-center space-x-1 md:space-x-4">
+            <div className="flex items-center space-x-4">
               <ProfileUpload userId={user?.id} />
-              <div>
-                <p className="text-lg sm:text-xl md:text-2xl font-semibold mb-2">
+              <div className="">
+                <p className="text-lg sm:text-xl md:text-2xl font-semibold mb-1 md:mb-2">
                   {user?.user_metadata?.full_name}
                 </p>
                 <p className="mb-2 text-base md:text-lg ">
@@ -59,7 +59,7 @@ const ArtisanProfile = () => {
                 </p>
               </div>
             </div>
-            <div className="flex flex-col md:flex-row my-4 md:justify-between">
+            <div className="flex flex-col sm:flex-row my-4 sm:justify-between">
               <div className="flex flex-col space-y-1 text-base">
                 <p>{user?.user_metadata?.occupation_name}</p>
                 <a href={`mailto:${user?.email}`}>{user?.email}</a>
@@ -67,7 +67,7 @@ const ArtisanProfile = () => {
                   {user?.user_metadata?.phone}
                 </a>
               </div>
-              <div className="flex flex-col md:flex-row md:space-x-3 my-2 space-y-3 md:space-y-0">
+              <div className="flex flex-col sm:flex-row sm:space-x-3 my-2 space-y-3 sm:space-y-0">
                 <Button
                   onClick={() => {
                     router.push(`/edit-profile?id=${user?.id}`);

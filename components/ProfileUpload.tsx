@@ -181,7 +181,7 @@ const ProfileUpload = ({ userId, edit }: UserId) => {
             </div>
 
             {edit && (
-              <div className="absolute bottom-0 right-0 h-[40px] w-[40px] overflow-hidden">
+              <div className="absolute bottom-0 right-0 h-[50px] w-[50px] overflow-hidden">
                 <div className="relative">
                   <AiOutlineCamera className="w-full h-full" />
                   <Input
@@ -203,7 +203,7 @@ const ProfileUpload = ({ userId, edit }: UserId) => {
               height={100}
               priority
             />
-            <div className="absolute bottom-0 right-0 h-[40px] w-[40px] overflow-hidden">
+            <div className="absolute bottom-0 right-[-10px] md:right-0 h-[30px] md:h-[40px] w-[30px] md:w-[40px]">
               <div className="relative">
                 <AiOutlineCamera className="w-full h-full" />
                 <Input
