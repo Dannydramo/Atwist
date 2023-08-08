@@ -130,8 +130,8 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({ artisanDetails, user }) => {
   };
 
   return (
-    <>
-      <div>
+    <section className="w-[95%] sm:w-[90%] md:w-[85%] lg:w-[75%] mx-auto max-w-[1600px]">
+      <div className="bg-white my-4 h-[100%] sm:min-h-[calc(90vh-80px)] rounded-xl p-4 sm:p-8 md:p-12">
         <div className="flex items-center space-x-4">
           <FetchArtisanImage avatarUrl={avatar_url} />
           <div>
@@ -152,7 +152,7 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({ artisanDetails, user }) => {
         </div>
         <Proof userId={id} artisanFullName={full_name} isClient={true} />
       </div>
-    </>
+    </section>
   );
 };
 

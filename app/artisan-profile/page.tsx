@@ -80,7 +80,7 @@ const ArtisanProfile = () => {
                   onClick={() => {
                     router.push(`/active-contract?id=${user?.id}`);
                   }}
-                  className="border text-base border-[#6272B9] bg-transparent  text-black outline-none hover:bg-[#6272B9] hover:text-white duration-500 ease-in rounded-[20px] text-center"
+                  className="border text-base border-[#6272B9] bg-transparent text-black outline-none hover:bg-[#6272B9] hover:text-white duration-500 ease-in rounded-[20px] text-center"
                 >
                   Active Contract
                 </Button>
