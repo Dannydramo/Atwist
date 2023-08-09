@@ -13,6 +13,7 @@ const Artisan = ({ params }: { params: { artisanId: string } }) => {
   const [error, setError] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [errorMessage, setErrorMessage] = useState();
+  const [userDetails, setUserDetails] = useState<userDetails>();
   useEffect(() => {
     async function getUser() {
       try {
@@ -27,7 +28,14 @@ const Artisan = ({ params }: { params: { artisanId: string } }) => {
 
         if (user) {
           setUser(user);
-          console.log(user?.id);
+          const { data, error } = await supabase
+            .from("profiles")
+            .select()
+            .eq("id", user?.id);
+
+          if (data) {
+            setUserDetails(data[0]);
+          }
         }
       } catch (error) {
         console.log(error);
@@ -59,41 +67,44 @@ const Artisan = ({ params }: { params: { artisanId: string } }) => {
   }, [id]);
   return (
     <>
-      <section>
-        {error && <>{errorMessage}</>}
-        {isLoading && !error ? (
-          <div>
-            <div className="flex items-center mb-4 space-x-4">
-              <Skeleton
-                circle={true}
-                containerClassName="w-[50px] h-[50px] sm:w-[70px] h-[70px] md:w-[100px] md:h-[100px]"
-                height="inherit"
-                width="inherit"
-              />
+      <section className="w-[95%] sm:w-[90%] md:w-[85%] lg:w-[75%] mx-auto max-w-[1600px]">
+        <div className="bg-white my-4 h-[100%] sm:min-h-[calc(90vh-80px)] rounded-xl p-4 sm:p-8 md:p-12">
+          {error && <>{errorMessage}</>}
+          {isLoading && !error ? (
+            <div>
+              <div className="flex items-center mb-4 space-x-4">
+                <Skeleton
+                  circle={true}
+                  containerClassName="w-[50px] h-[50px] sm:w-[70px] h-[70px] md:w-[100px] md:h-[100px]"
+                  height="inherit"
+                  width="inherit"
+                />
+
+                <Skeleton
+                  count={2}
+                  containerClassName="flex-1 w-full sm:w-[80%] md:w-[70%] h-[10px] sm:h-[15px] md:w-[20px]"
+                  width="inherit"
+                  height="inherit"
+                />
+              </div>
 
               <Skeleton
-                count={2}
-                containerClassName="flex-1 w-full sm:w-[80%] md:w-[70%] h-[10px] sm:h-[15px] md:w-[20px]"
+                containerClassName="flex-1 w-full sm:w-[80%] md:w-[70%] h-[25px] sm:h-[35px] md:w-[40px]"
                 width="inherit"
                 height="inherit"
               />
             </div>
-
-            <Skeleton
-              containerClassName="flex-1 w-full sm:w-[80%] md:w-[70%] h-[25px] sm:h-[35px] md:w-[40px]"
-              width="inherit"
-              height="inherit"
-            />
-          </div>
-        ) : (
-          artisan?.map((artisanDetail) => (
-            <ArtisanDetails
-              key={artisanDetail.id}
-              artisanDetails={artisanDetail}
-              user={user}
-            />
-          ))
-        )}
+          ) : (
+            artisan?.map((artisanDetail) => (
+              <ArtisanDetails
+                key={artisanDetail.id}
+                artisanDetails={artisanDetail}
+                user={user}
+                userDetails={userDetails}
+              />
+            ))
+          )}
+        </div>
       </section>
     </>
   );

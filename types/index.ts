@@ -55,6 +55,7 @@ export interface ClientDetails {
   client_id?: string;
   client_name?: string;
   contact_email?: string;
+  client_image?: string;
   phone?: string;
   date?: string;
   status: "pending" | "approved" | "declined";
@@ -63,6 +64,7 @@ export interface BookingDetails {
   client_id: string;
   client_name?: string;
   contact_email?: string;
+  client_image?: string;
   phone?: string;
   date?: string;
   status: "pending" | "approved" | "declined";

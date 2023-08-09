@@ -6,9 +6,10 @@ import Image from "next/image";
 
 interface ImageDetails {
   avatarUrl: string;
+  bookingImage?: boolean;
 }
 
-const FetchArtisanImage = ({ avatarUrl }: ImageDetails) => {
+const FetchArtisanImage = ({ avatarUrl, bookingImage }: ImageDetails) => {
   const [profileImage, setProfileImage] = useState<string | undefined>(
     undefined
   );
@@ -64,7 +65,13 @@ const FetchArtisanImage = ({ avatarUrl }: ImageDetails) => {
     <>
       <div className="">
         {profileImage ? (
-          <div className="rounded-[90%] w-[50px] h-[50px] sm:w-[80px] sm:h-[80px] md:w-[100px] md:h-[100px] overflow-hidden">
+          <div
+            className={`rounded-[90%]  overflow-hidden ${
+              bookingImage
+                ? "w-[40px] h-[40px]"
+                : "w-[50px] h-[50px] sm:w-[80px] sm:h-[80px] md:w-[100px] md:h-[100px]"
+            }`}
+          >
             <Image
               src={profileImage}
               alt="Profile"
@@ -75,7 +82,13 @@ const FetchArtisanImage = ({ avatarUrl }: ImageDetails) => {
             />
           </div>
         ) : (
-          <div className="w-[50px] h-[50px] sm:w-[80px] sm:h-[80px] md:w-[100px] md:h-[100px]">
+          <div
+            className={`${
+              bookingImage
+                ? "w-[40px] h-[40px]"
+                : "w-[50px] h-[50px] sm:w-[80px] sm:h-[80px] md:w-[100px] md:h-[100px] "
+            }`}
+          >
             <Image
               src="/noprofile.jpg"
               alt="Profile"

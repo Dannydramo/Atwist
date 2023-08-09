@@ -6,14 +6,19 @@ import { Button } from "./ui/button";
 import FetchArtisanImage from "./FetchArtisanImage";
 import Proof from "./Proof";
 import supabase from "@/lib/supabase";
-import { Artisan, Booking, ClientDetails } from "@/types";
+import { Artisan, Booking, ClientDetails, userDetails } from "@/types";
 
 interface ArtisanProps {
   artisanDetails: Artisan;
   user: User | null;
+  userDetails?: userDetails;
 }
 
-const ArtisanDetails: React.FC<ArtisanProps> = ({ artisanDetails, user }) => {
+const ArtisanDetails: React.FC<ArtisanProps> = ({
+  artisanDetails,
+  user,
+  userDetails,
+}) => {
   const { id, avatar_url, full_name, loaction } = artisanDetails;
   const artisanId = id;
   const [existingBooking, setExistingBooking] = useState<Booking[]>([]);
@@ -82,6 +87,7 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({ artisanDetails, user }) => {
       client_name: user?.user_metadata?.full_name,
       contact_email: user?.email,
       phone: user?.user_metadata?.phone,
+      client_image: userDetails?.avatar_url,
       date: formattedDate,
       status: "pending",
     };
@@ -130,8 +136,8 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({ artisanDetails, user }) => {
   };
 
   return (
-    <section className="w-[95%] sm:w-[90%] md:w-[85%] lg:w-[75%] mx-auto max-w-[1600px]">
-      <div className="bg-white my-4 h-[100%] sm:min-h-[calc(90vh-80px)] rounded-xl p-4 sm:p-8 md:p-12">
+    <section>
+      <div>
         <div className="flex items-center space-x-4">
           <FetchArtisanImage avatarUrl={avatar_url} />
           <div>
@@ -144,7 +150,7 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({ artisanDetails, user }) => {
         <div className="">
           <Button
             onClick={bookArtisan}
-            className="bg-[#6272B9] text-sm md:text-base text-white py-1 px-6 rounded-md text-center"
+            className="bg-[#6272B9] mt-3 text-sm md:text-base text-white py-1 px-6 rounded-md text-center"
             disabled={isButtonDisabled || loading}
           >
             {loading ? "Making Request" : requestContent}
