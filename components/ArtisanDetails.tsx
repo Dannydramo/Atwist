@@ -7,7 +7,13 @@ import FetchArtisanImage from "./FetchArtisanImage";
 import Proof from "./Proof";
 import supabase from "@/lib/supabase";
 import { userDetails, Booking, BookingDetails } from "@/types";
-
+import {
+  BiLogoFacebook,
+  BiLogoLinkedin,
+  BiLogoTwitter,
+  BiLogoInstagramAlt,
+} from "react-icons/bi";
+import { CiLocationOn } from "react-icons/ci";
 interface ArtisanProps {
   artisanDetails: userDetails;
   user: User | null;
@@ -19,8 +25,19 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
   user,
   userDetails,
 }) => {
-  const { id, avatar_url, full_name, location, email, occupation_name, phone } =
-    artisanDetails;
+  const {
+    id,
+    avatar_url,
+    full_name,
+    location,
+    email,
+    occupation_name,
+    phone,
+    linkedIn,
+    twitter,
+    facebook,
+    instagram,
+  } = artisanDetails;
   const artisanId = id;
   const [existingBooking, setExistingBooking] = useState<Booking[]>([]);
   const { toast } = useToast();
@@ -151,7 +168,11 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
             <p className="text-lg sm:text-xl md:text-2xl font-semibold mb-2">
               {full_name}
             </p>
-            <p className="mb-2 text-sm sm:text-base md:text-lg ">{location}</p>
+            <p className="mb-2 text-sm sm:text-base md:text-lg ">
+              {" "}
+              <CiLocationOn />
+              {location}
+            </p>
           </div>
         </div>
         <div className="flex flex-col space-y-1 text-base">
@@ -159,7 +180,20 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
           <a href={`mailto:${email}`}>{email}</a>
           <a href={`tel:${phone}`}>{phone}</a>
         </div>
-        {/* <div className="flex space-x-3"></div> */}
+        <div className="flex space-x-3">
+          <a href={`${facebook}`} target="_blank" rel="noopener noreferrer">
+            <BiLogoFacebook />
+          </a>
+          <a href={`${linkedIn}`} target="_blank" rel="noopener noreferrer">
+            <BiLogoLinkedin />
+          </a>
+          <a href={`${twitter}`} target="_blank" rel="noopener noreferrer">
+            <BiLogoTwitter />
+          </a>
+          <a href={`${instagram}`} target="_blank" rel="noopener noreferrer">
+            <BiLogoInstagramAlt />
+          </a>
+        </div>
         <div className="mt-2">
           <Button
             onClick={bookArtisan}

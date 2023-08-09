@@ -8,6 +8,13 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { userDetails } from "@/types";
+import { CiLocationOn } from "react-icons/ci";
+import {
+  BiLogoFacebook,
+  BiLogoInstagramAlt,
+  BiLogoLinkedin,
+  BiLogoTwitter,
+} from "react-icons/bi";
 
 const ArtisanProfile = () => {
   const [user, setUser] = useState<User | null>();
@@ -54,7 +61,7 @@ const ArtisanProfile = () => {
                   {user?.user_metadata?.full_name}
                 </p>
                 <p className="mb-2 text-base md:text-lg ">
-                  {userDetails?.location}
+                  <CiLocationOn /> {userDetails?.location}
                 </p>
               </div>
             </div>
@@ -63,6 +70,36 @@ const ArtisanProfile = () => {
                 <p>{user?.user_metadata?.occupation_name}</p>
                 <p>{user?.email}</p>
                 <p>{user?.user_metadata?.phone}</p>
+              </div>
+              <div className="flex space-x-3">
+                <a
+                  href={`${userDetails?.facebook}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <BiLogoFacebook />
+                </a>
+                <a
+                  href={`${userDetails?.linkedIn}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <BiLogoLinkedin />
+                </a>
+                <a
+                  href={`${userDetails?.twitter}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <BiLogoTwitter />
+                </a>
+                <a
+                  href={`${userDetails?.instagram}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <BiLogoInstagramAlt />
+                </a>
               </div>
               <div className="flex flex-col sm:flex-row sm:space-x-3 my-2 space-y-3 sm:space-y-0">
                 <Button
