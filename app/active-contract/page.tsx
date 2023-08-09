@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import supabase from "@/lib/supabase";
+import { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { BookingData, ClientDetails } from "@/types";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
@@ -16,8 +17,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import FetchArtisanImage from "@/components/FetchArtisanImage";
-import Image from "next/image";
-import { useToast } from "@/components/ui/use-toast";
 
 const ActiveContract = () => {
   const searchParams = useSearchParams();
@@ -25,10 +24,8 @@ const ActiveContract = () => {
   const [bookedClients, setBookedClients] = useState<BookingData[]>([]);
   const [activeContracts, setActiveContracts] = useState<ClientDetails[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [toasting, setToasting] = useState(false);
-  const { toast } = useToast();
-  // Fetch booked clients and active contracts
-  const fetchData = useCallback(async () => {
+
+  const getContracts = useCallback(async () => {
     try {
       const { data: bookingsData, error: bookingsError } = await supabase
         .from("bookings")
@@ -42,96 +39,67 @@ const ActiveContract = () => {
       if (bookingsData) {
         setBookedClients(bookingsData);
       }
+    } catch (error: any) {
+      console.log(error.message);
+      setError("Error fetching contracts. Please try again later.");
+    }
+  }, [artisanId]);
 
-      const { data, error: activeContractsError } = await supabase
+  const getActiveContracts = useCallback(async () => {
+    try {
+      const { data, error } = await supabase
         .from("bookings")
         .select("active_contract")
         .eq("id", artisanId);
 
-      if (activeContractsError) {
-        throw activeContractsError;
+      if (error) {
+        throw error;
       }
 
       if (data && data.length > 0) {
         setActiveContracts(data[0].active_contract);
       }
     } catch (error: any) {
-      console.error("Error fetching data:", error.message);
-      setError("Error fetching data. Please try again later.");
+      console.error("Error fetching active contracts:", error.message);
+      setError("Error fetching active contracts. Please try again later.");
     }
   }, [artisanId]);
 
   useEffect(() => {
-    fetchData();
-  }, [artisanId, fetchData]);
+    getContracts();
+    getActiveContracts();
+  }, [artisanId, getActiveContracts, getContracts]);
 
-  // Handle approval, decline, and completion
-  const handleAction = async (
-    action: "approve" | "decline" | "complete",
-    clientId: string
-  ) => {
+  const handleApprove = async (clientId: string) => {
     try {
-      const bookingToUpdate = bookedClients.find(
-        (booking) =>
-          booking.pending_contract.some(
-            (client) => client.client_id === clientId
-          ) ||
-          (action === "decline" &&
-            booking.active_contract.some(
-              (client) => client.client_id === clientId
-            ))
+      const bookingToUpdate = bookedClients.find((booking) =>
+        booking.pending_contract.some((client) => client.client_id === clientId)
       );
 
       if (!bookingToUpdate) {
         console.error("Booking not found.");
         return;
       }
-      let updatedPendingContract = [...bookingToUpdate.pending_contract];
-      let updatedActiveContract = [...bookingToUpdate.active_contract];
 
-      if (action === "approve") {
-        setToasting(true);
-        toast({
-          description: "Approving",
-        });
-        updatedPendingContract = bookingToUpdate.pending_contract.filter(
-          (client) => client.client_id !== clientId
-        );
+      const updatedPendingContract = bookingToUpdate.pending_contract.filter(
+        (client) => client.client_id !== clientId
+      );
 
-        const approvedClient = bookingToUpdate.pending_contract.find(
-          (client) => client.client_id === clientId
-        );
+      const approvedClient = bookingToUpdate.pending_contract.find(
+        (client) => client.client_id === clientId
+      );
 
-        if (approvedClient) {
-          approvedClient.status = "approved";
-          updatedActiveContract.push(approvedClient);
-
-          toast({
-            description: "Approved",
-          });
-          setTimeout(() => {
-            setToasting(false);
-          }, 3000);
-        }
-      } else if (action === "decline") {
-        setToasting(true);
-        toast({
-          description: "Declining",
-        });
-        updatedPendingContract = bookingToUpdate.pending_contract.filter(
-          (client) => client.client_id !== clientId
-        );
-        toast({
-          description: "Declined",
-        });
-        setTimeout(() => {
-          setToasting(false);
-        }, 3000);
-      } else if (action === "complete") {
-        updatedActiveContract = bookingToUpdate.active_contract.filter(
-          (client) => client.client_id !== clientId
-        );
+      if (!approvedClient) {
+        console.error("Client not found in the pending_contract.");
+        return;
       }
+
+      approvedClient.status = "approved";
+
+      const updatedActiveContract = [
+        ...(bookingToUpdate.active_contract || []),
+        approvedClient,
+      ];
 
       // Update the booking record in Supabase
       const { error } = await supabase
@@ -146,6 +114,7 @@ const ActiveContract = () => {
         throw error;
       }
 
+      // Update the bookedClients state with the updated data
       const updatedClients = bookedClients.map((booking) =>
         booking.id === bookingToUpdate.id
           ? {
@@ -155,14 +124,95 @@ const ActiveContract = () => {
             }
           : booking
       );
-
       setBookedClients(updatedClients);
-      fetchData();
+      getActiveContracts();
+      getContracts();
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        description: `Error ${action}ing booking: ${error.message}`,
-      });
+      console.error("Error approving booking:", error.message);
+    }
+  };
+
+  const handleDecline = async (clientId: string) => {
+    try {
+      const bookingToUpdate = bookedClients.find((booking) =>
+        booking.pending_contract.some((client) => client.client_id === clientId)
+      );
+
+      if (!bookingToUpdate) {
+        console.error("Booking not found.");
+        return;
+      }
+
+      const updatedPendingContract = bookingToUpdate.pending_contract.filter(
+        (client) => client.client_id !== clientId
+      );
+
+      // Update the booking record in Supabase
+      const { error } = await supabase
+        .from("bookings")
+        .update({
+          pending_contract: updatedPendingContract,
+        })
+        .eq("id", bookingToUpdate.id);
+
+      if (error) {
+        throw error;
+      }
+
+      // Update the bookedClients state with the updated data
+      const updatedClients = bookedClients.map((booking) =>
+        booking.id === bookingToUpdate.id
+          ? {
+              ...booking,
+              pending_contract: updatedPendingContract,
+            }
+          : booking
+      );
+      setBookedClients(updatedClients);
+    } catch (error: any) {
+      console.error("Error declining booking:", error.message);
+    }
+  };
+
+  const handleCompleted = async (clientId: string) => {
+    try {
+      const bookingToUpdate = bookedClients.find((booking) =>
+        booking.active_contract.some((client) => client.client_id === clientId)
+      );
+
+      if (!bookingToUpdate) {
+        console.error("Booking not found.");
+        return;
+      }
+
+      const updatedActiveContract = bookingToUpdate.active_contract.filter(
+        (client) => client.client_id !== clientId
+      );
+
+      // Update the booking record in Supabase
+      const { error } = await supabase
+        .from("bookings")
+        .update({
+          active_contract: updatedActiveContract,
+        })
+        .eq("id", bookingToUpdate.id);
+
+      if (error) {
+        throw error;
+      }
+
+      // Update the bookedClients state with the updated data
+      const updatedClients = bookedClients.map((booking) =>
+        booking.id === bookingToUpdate.id
+          ? {
+              ...booking,
+              active_contract: updatedActiveContract,
+            }
+          : booking
+      );
+      setBookedClients(updatedClients);
+    } catch (error: any) {
+      console.error("Error completing project:", error.message);
     }
   };
 
@@ -233,7 +283,7 @@ const ActiveContract = () => {
                                   className="bg-green-500 rounded-3xl hover:bg-green-500"
                                   id={client.client_id}
                                   onClick={() =>
-                                    handleAction("approve", client?.client_id)
+                                    handleApprove(client?.client_id)
                                   }
                                 >
                                   Approve
@@ -242,7 +292,7 @@ const ActiveContract = () => {
                                   className="bg-red-500 rounded-3xl hover:bg-red-500"
                                   id={client.client_id}
                                   onClick={() =>
-                                    handleAction("decline", client?.client_id)
+                                    handleDecline(client?.client_id)
                                   }
                                 >
                                   Decline
@@ -310,7 +360,7 @@ const ActiveContract = () => {
                               <Button
                                 onClick={() =>
                                   client.client_id &&
-                                  handleAction("complete", client.client_id)
+                                  handleCompleted(client.client_id)
                                 }
                               >
                                 Complete Task
