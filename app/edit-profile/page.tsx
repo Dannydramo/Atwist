@@ -40,7 +40,7 @@ const EditProfile = () => {
         if (data) {
           setUserDetails(data[0]);
           setUpdateProfileDetails({
-            locationText: userDetails?.loaction ?? "",
+            locationText: userDetails?.location ?? "",
             descriptionText: userDetails?.description ?? "",
             facebookLink: userDetails?.facebook ?? "",
             instagramLink: userDetails?.instagram ?? "",
@@ -58,7 +58,7 @@ const EditProfile = () => {
     userDetails?.facebook,
     userDetails?.instagram,
     userDetails?.linkedIn,
-    userDetails?.loaction,
+    userDetails?.location,
     userDetails?.twitter,
     userId,
   ]);
