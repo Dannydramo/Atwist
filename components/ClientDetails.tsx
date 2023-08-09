@@ -14,11 +14,7 @@ const ClientDetails = ({ userId, userName, userPhone }: clientProfile) => {
   return (
     <section>
       {editPopUp && (
-        <EditClientDetails
-          userId={userId}
-          editPopUp={editPopUp}
-          setEditPopUp={setEditPopUp}
-        />
+        <EditClientDetails userId={userId} setEditPopUp={setEditPopUp} />
       )}
 
       <div className="bg-white my-4 h-[100%] md:max-h-[500px] md:min-w-[300px] rounded-xl p-4 sm:p-8">

@@ -168,11 +168,12 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
             <p className="text-lg sm:text-xl md:text-2xl font-semibold mb-2">
               {full_name}
             </p>
-            <p className="mb-2 text-sm sm:text-base md:text-lg ">
-              {" "}
-              <CiLocationOn />
-              {location}
-            </p>
+            {location && (
+              <p className="mb-2 text-sm sm:text-base md:text-lg ">
+                <CiLocationOn />
+                {location}
+              </p>
+            )}
           </div>
         </div>
         <div className="flex flex-col space-y-1 text-base">
@@ -181,18 +182,26 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
           <a href={`tel:${phone}`}>{phone}</a>
         </div>
         <div className="flex space-x-3">
-          <a href={`${facebook}`} target="_blank" rel="noopener noreferrer">
-            <BiLogoFacebook />
-          </a>
-          <a href={`${linkedIn}`} target="_blank" rel="noopener noreferrer">
-            <BiLogoLinkedin />
-          </a>
-          <a href={`${twitter}`} target="_blank" rel="noopener noreferrer">
-            <BiLogoTwitter />
-          </a>
-          <a href={`${instagram}`} target="_blank" rel="noopener noreferrer">
-            <BiLogoInstagramAlt />
-          </a>
+          {facebook && (
+            <a href={`${facebook}`} target="_blank" rel="noopener noreferrer">
+              <BiLogoFacebook />
+            </a>
+          )}
+          {linkedIn && (
+            <a href={`${linkedIn}`} target="_blank" rel="noopener noreferrer">
+              <BiLogoLinkedin />
+            </a>
+          )}
+          {twitter && (
+            <a href={`${twitter}`} target="_blank" rel="noopener noreferrer">
+              <BiLogoTwitter />
+            </a>
+          )}
+          {instagram && (
+            <a href={`${instagram}`} target="_blank" rel="noopener noreferrer">
+              <BiLogoInstagramAlt />
+            </a>
+          )}
         </div>
         <div className="mt-2">
           <Button

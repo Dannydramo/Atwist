@@ -7,14 +7,14 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { userDetails } from "@/types";
+import { FaTimes } from "react-icons/fa";
 
 interface editDetail {
   userId: string;
-  editPopUp: boolean;
   setEditPopUp: Dispatch<SetStateAction<boolean>>;
 }
 
-const EditClientDetails = ({ userId, editPopUp, setEditPopUp }: editDetail) => {
+const EditClientDetails = ({ userId, setEditPopUp }: editDetail) => {
   const [updateProfileDetails, setUpdateProfileDetails] = useState({
     locationText: "",
     descriptionText: "",
@@ -102,9 +102,14 @@ const EditClientDetails = ({ userId, editPopUp, setEditPopUp }: editDetail) => {
   };
   return (
     <>
-      <section className="absolute top-0 w-full min-h-[100vh] right-0 left-0 bg-stone-700">
-        <div className="w-[95%] flex fleex-col items-center justify-center sm:w-[70%] md:w-[65%] lg:w-[55%] mx-auto max-w-[1600px]">
-          <div className="bg-white my-4 h-[100%] sm:min-h-[calc(90vh-80px)] rounded-xl p-4 sm:p-8 md:p-12">
+      <section className="absolute top-0 w-full min-h-[100vh] z-[100] right-0 left-0 bg-stone-700">
+        <div className="flex fleex-col items-center justify-center">
+          <div className="bg-white w-[300px] mt-4 relative sm:w-[500px] md:w-[600px] my-4 h-[100%] mx-auto sm:min-h-[calc(90vh-80px)] rounded-xl p-4 sm:p-8 md:p-12">
+            <FaTimes
+              onClick={() => setEditPopUp(false)}
+              className="absolute top-4 right-4 cursor-pointer"
+            />
+
             <ProfileUpload userId={userId} edit={editProfileImage} />
             <Textarea
               value={updateProfileDetails.descriptionText}
