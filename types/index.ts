@@ -25,7 +25,7 @@ export interface Artisan {
   avatar_url: string;
   profile_image: string | undefined;
   email?: string;
-  loaction: string;
+  location: string;
 }
 
 export interface userDetails {
@@ -37,7 +37,7 @@ export interface userDetails {
   profile_image: string;
   description: string;
   phone: string;
-  loaction: string;
+  location: string;
   twitter: string;
   linkedIn: string;
   facebook: string;

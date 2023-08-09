@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "./ui/button";
@@ -19,13 +19,15 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
   user,
   userDetails,
 }) => {
-  const { id, avatar_url, full_name, loaction } = artisanDetails;
+  const { id, avatar_url, full_name, location } = artisanDetails;
   const artisanId = id;
+
   const [existingBooking, setExistingBooking] = useState<Booking[]>([]);
-  const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
-  const [requestContent, setRequestContent] = useState<string>("");
+  const [requestContent, setRequestContent] = useState<string>("Make Request");
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
+
+  const { toast } = useToast();
 
   useEffect(() => {
     async function checkExistingBooking() {
@@ -49,7 +51,7 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
   }, [artisanId]);
 
   useEffect(() => {
-    if (existingBooking && existingBooking.length > 0) {
+    if (existingBooking.length > 0) {
       const pendingClient = existingBooking[0].pending_contract.find(
         (client) => client.client_id === user?.id
       );
@@ -76,11 +78,9 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
 
   const bookArtisan = async () => {
     const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-
-    const formattedDate = `${year}-${month}-${day}`;
+    const formattedDate = `${date.getFullYear()}-${
+      date.getMonth() + 1
+    }-${date.getDate()}`;
 
     const clientDetails: ClientDetails = {
       client_id: user?.id,
@@ -91,20 +91,19 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
       date: formattedDate,
       status: "pending",
     };
+
     try {
       setLoading(true);
       toast({
-        description: "Making request",
+        description: "Making Request",
       });
       setRequestContent("Making Request");
       setIsButtonDisabled(true);
-      let bookedClient: any[] = [];
 
-      if (existingBooking && existingBooking.length > 0) {
-        bookedClient = existingBooking[0].pending_contract || [];
-      }
-
-      bookedClient = [...bookedClient, clientDetails];
+      const bookedClient = [
+        ...(existingBooking[0]?.pending_contract || []),
+        clientDetails,
+      ];
 
       const { data: updatedBooking, error: bookingError } = await supabase
         .from("bookings")
@@ -121,7 +120,9 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
       if (updatedBooking) {
         setLoading(false);
         setRequestContent("Request Sent");
-        console.log("Booking added/updated successfully:", updatedBooking);
+        toast({
+          description: "Request sent",
+        });
         return updatedBooking;
       }
     } catch (error: any) {
@@ -144,7 +145,7 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
             <p className="text-lg sm:text-xl md:text-2xl font-semibold mb-2">
               {full_name}
             </p>
-            <p className="mb-2 text-sm sm:text-base md:text-lg ">{loaction}</p>
+            <p className="mb-2 text-sm sm:text-base md:text-lg">{location}</p>
           </div>
         </div>
         <div className="">

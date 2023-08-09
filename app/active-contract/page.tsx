@@ -16,6 +16,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import FetchArtisanImage from "@/components/FetchArtisanImage";
+import Image from "next/image";
+import { useToast } from "@/components/ui/use-toast";
 
 const ActiveContract = () => {
   const searchParams = useSearchParams();
@@ -23,7 +25,8 @@ const ActiveContract = () => {
   const [bookedClients, setBookedClients] = useState<BookingData[]>([]);
   const [activeContracts, setActiveContracts] = useState<ClientDetails[]>([]);
   const [error, setError] = useState<string | null>(null);
-
+  const [toasting, setToasting] = useState(false);
+  const { toast } = useToast();
   // Fetch booked clients and active contracts
   const fetchData = useCallback(async () => {
     try {
@@ -87,6 +90,10 @@ const ActiveContract = () => {
       let updatedActiveContract = [...bookingToUpdate.active_contract];
 
       if (action === "approve") {
+        setToasting(true);
+        toast({
+          description: "Approving",
+        });
         updatedPendingContract = bookingToUpdate.pending_contract.filter(
           (client) => client.client_id !== clientId
         );
@@ -98,11 +105,28 @@ const ActiveContract = () => {
         if (approvedClient) {
           approvedClient.status = "approved";
           updatedActiveContract.push(approvedClient);
+
+          toast({
+            description: "Approved",
+          });
+          setTimeout(() => {
+            setToasting(false);
+          }, 3000);
         }
       } else if (action === "decline") {
+        setToasting(true);
+        toast({
+          description: "Declining",
+        });
         updatedPendingContract = bookingToUpdate.pending_contract.filter(
           (client) => client.client_id !== clientId
         );
+        toast({
+          description: "Declined",
+        });
+        setTimeout(() => {
+          setToasting(false);
+        }, 3000);
       } else if (action === "complete") {
         updatedActiveContract = bookingToUpdate.active_contract.filter(
           (client) => client.client_id !== clientId
@@ -135,7 +159,10 @@ const ActiveContract = () => {
       setBookedClients(updatedClients);
       fetchData();
     } catch (error: any) {
-      console.error(`Error ${action}ing booking:`, error.message);
+      toast({
+        variant: "destructive",
+        description: `Error ${action}ing booking: ${error.message}`,
+      });
     }
   };
 
@@ -177,11 +204,21 @@ const ActiveContract = () => {
                             <TableCell>{index + 1}</TableCell>
                             <TableCell>
                               <div className="flex items-center">
-                                {client.client_image && (
+                                {client.client_image ? (
                                   <FetchArtisanImage
                                     avatarUrl={client.client_image}
                                     bookingImage={true}
                                   />
+                                ) : (
+                                  <div className="w-[40px] h-[40px]">
+                                    <Image
+                                      src="/noprofile.jpg"
+                                      alt="Profile"
+                                      width={100}
+                                      height={100}
+                                      priority
+                                    />
+                                  </div>
                                 )}
                                 <div className="ml-2">{client.client_name}</div>
                               </div>
@@ -245,11 +282,21 @@ const ActiveContract = () => {
                           <TableCell>{index + 1}</TableCell>
                           <TableCell>
                             <div className="flex items-center">
-                              {client.client_image && (
+                              {client.client_image ? (
                                 <FetchArtisanImage
                                   avatarUrl={client.client_image}
                                   bookingImage={true}
                                 />
+                              ) : (
+                                <div className="w-[40px] h-[40px]">
+                                  <Image
+                                    src="/noprofile.jpg"
+                                    alt="Profile"
+                                    width={100}
+                                    height={100}
+                                    priority
+                                  />
+                                </div>
                               )}
                               <div className="ml-2">{client.client_name}</div>
                             </div>

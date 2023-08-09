@@ -29,7 +29,7 @@ const Login = () => {
     try {
       setLoading(true);
       toast({
-        description: <>Loag</> && "Logging in...",
+        description: "Logging in...",
       });
       // Supabase Login with Email and password function
       const {

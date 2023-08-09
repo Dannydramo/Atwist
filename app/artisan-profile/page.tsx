@@ -55,7 +55,7 @@ const ArtisanProfile = () => {
                   {user?.user_metadata?.full_name}
                 </p>
                 <p className="mb-2 text-base md:text-lg ">
-                  {userDetails?.loaction}
+                  {userDetails?.location}
                 </p>
               </div>
             </div>
