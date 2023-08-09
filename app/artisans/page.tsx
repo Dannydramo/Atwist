@@ -17,7 +17,6 @@ import {
 import supabase from "@/lib/supabase";
 import { occupations } from "@/components/occupations";
 import Skeleton from "react-loading-skeleton";
-import { Artisan } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Label } from "@radix-ui/react-label";
 import { ChevronsUpDown, Check } from "lucide-react";
@@ -27,7 +26,7 @@ import { userDetails } from "@/types";
 const Artisans = () => {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
-  const [allArtisans, setAllArtisans] = useState<Artisan[]>([]);
+  const [allArtisans, setAllArtisans] = useState<userDetails[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();

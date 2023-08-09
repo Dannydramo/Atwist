@@ -9,11 +9,11 @@ import {
   useState,
 } from "react";
 import supabase from "@/lib/supabase";
-import { Artisan } from "@/types";
+import { userDetails } from "@/types";
 
 interface ArtisansProps {
-  allArtisans: Artisan[];
-  setAllArtisans: Dispatch<SetStateAction<Artisan[]>>;
+  allArtisans: userDetails[];
+  setAllArtisans: Dispatch<SetStateAction<userDetails[]>>;
 }
 
 const ArtisanComponent: React.FC<ArtisansProps> = ({

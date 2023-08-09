@@ -6,10 +6,10 @@ import { Button } from "./ui/button";
 import FetchArtisanImage from "./FetchArtisanImage";
 import Proof from "./Proof";
 import supabase from "@/lib/supabase";
-import { Artisan, Booking, ClientDetails, userDetails } from "@/types";
+import { userDetails, Booking, BookingDetails } from "@/types";
 
 interface ArtisanProps {
-  artisanDetails: Artisan;
+  artisanDetails: userDetails;
   user: User | null;
   userDetails?: userDetails;
 }
@@ -19,7 +19,8 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
   user,
   userDetails,
 }) => {
-  const { id, avatar_url, full_name, location } = artisanDetails;
+  const { id, avatar_url, full_name, location, email, occupation_name, phone } =
+    artisanDetails;
   const artisanId = id;
   const [existingBooking, setExistingBooking] = useState<Booking[]>([]);
   const { toast } = useToast();
@@ -76,13 +77,12 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
 
   const bookArtisan = async () => {
     const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
 
-    const formattedDate = `${year}-${month}-${day}`;
+    const formattedDate = `${date.getFullYear()}-${
+      date.getMonth() + 1
+    }-${date.getDate()}`;
 
-    const clientDetails: ClientDetails = {
+    const clientDetails: BookingDetails = {
       client_id: user?.id,
       client_name: user?.user_metadata?.full_name,
       contact_email: user?.email,
@@ -98,13 +98,20 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
       });
       setRequestContent("Making Request");
       setIsButtonDisabled(true);
-      let bookedClient: any[] = [];
+      // let bookedClient: any[] = [];
 
-      if (existingBooking && existingBooking.length > 0) {
-        bookedClient = existingBooking[0].pending_contract || [];
-      }
+      // if (existingBooking && existingBooking.length > 0) {
+      //   bookedClient = existingBooking[0].pending_contract || [];
+      //   setLoading(false);
+      //   setRequestContent("Request Sent");
+      // }
 
-      bookedClient = [...bookedClient, clientDetails];
+      // bookedClient = [...bookedClient, clientDetails];
+
+      const bookedClient = [
+        ...(existingBooking[0]?.pending_contract || []),
+        clientDetails,
+      ];
 
       const { data: updatedBooking, error: bookingError } = await supabase
         .from("bookings")
@@ -147,7 +154,13 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
             <p className="mb-2 text-sm sm:text-base md:text-lg ">{location}</p>
           </div>
         </div>
-        <div className="">
+        <div className="flex flex-col space-y-1 text-base">
+          <p>{occupation_name}</p>
+          <a href={`mailto:${email}`}>{email}</a>
+          <a href={`tel:${phone}`}>{phone}</a>
+        </div>
+        {/* <div className="flex space-x-3"></div> */}
+        <div className="mt-2">
           <Button
             onClick={bookArtisan}
             className="bg-[#6272B9] mt-3 text-sm md:text-base text-white py-1 px-6 rounded-md text-center"

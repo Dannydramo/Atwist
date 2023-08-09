@@ -3,7 +3,7 @@
 import supabase from "@/lib/supabase";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { BookingData, ClientDetails } from "@/types";
+import { BookingData, BookingDetails } from "@/types";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -22,7 +22,7 @@ const ActiveContract = () => {
   const searchParams = useSearchParams();
   const artisanId = searchParams.get("id") ?? "";
   const [bookedClients, setBookedClients] = useState<BookingData[]>([]);
-  const [activeContracts, setActiveContracts] = useState<ClientDetails[]>([]);
+  const [activeContracts, setActiveContracts] = useState<BookingDetails[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const getContracts = useCallback(async () => {
@@ -283,6 +283,7 @@ const ActiveContract = () => {
                                   className="bg-green-500 rounded-3xl hover:bg-green-500"
                                   id={client.client_id}
                                   onClick={() =>
+                                    client.client_id &&
                                     handleApprove(client?.client_id)
                                   }
                                 >
@@ -292,6 +293,7 @@ const ActiveContract = () => {
                                   className="bg-red-500 rounded-3xl hover:bg-red-500"
                                   id={client.client_id}
                                   onClick={() =>
+                                    client.client_id &&
                                     handleDecline(client?.client_id)
                                   }
                                 >

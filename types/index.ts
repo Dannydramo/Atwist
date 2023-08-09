@@ -18,26 +18,16 @@ export interface LoginDetail {
   email: string;
 }
 
-export interface Artisan {
+export interface userDetails {
   id: string;
   full_name: string;
-  occupation_name: string;
+  occupation_name?: string;
+  description?: string;
   avatar_url: string;
   profile_image: string | undefined;
   email?: string;
   location: string;
-}
-
-export interface userDetails {
-  id: string;
-  full_name: string;
-  email: string;
-  avatar_url: string;
-  occupation_name: string;
-  profile_image: string;
-  description: string;
   phone: string;
-  location: string;
   twitter: string;
   linkedIn: string;
   facebook: string;
@@ -45,13 +35,13 @@ export interface userDetails {
 }
 
 export interface Booking {
-  active_contract: ClientDetails[];
+  active_contract: BookingDetails[];
   id: string;
   artisan_id: string;
   pending_contract: BookingDetails[];
 }
 
-export interface ClientDetails {
+export interface BookingDetails {
   client_id?: string;
   client_name?: string;
   contact_email?: string;
@@ -60,18 +50,10 @@ export interface ClientDetails {
   date?: string;
   status: "pending" | "approved" | "declined";
 }
-export interface BookingDetails {
-  client_id: string;
-  client_name?: string;
-  contact_email?: string;
-  client_image?: string;
-  phone?: string;
-  date?: string;
-  status: "pending" | "approved" | "declined";
-}
+
 export interface BookingData {
   id: string;
   artisan_id: string;
   pending_contract: BookingDetails[];
-  active_contract: ClientDetails[];
+  active_contract: BookingDetails[];
 }

@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { userDetails } from "@/types";
-import Link from "next/link";
 
 const ArtisanProfile = () => {
   const [user, setUser] = useState<User | null>();
@@ -62,10 +61,8 @@ const ArtisanProfile = () => {
             <div className="flex flex-col sm:flex-row my-4 sm:justify-between">
               <div className="flex flex-col space-y-1 text-base">
                 <p>{user?.user_metadata?.occupation_name}</p>
-                <a href={`mailto:${user?.email}`}>{user?.email}</a>
-                <a href={`tel:${user?.user_metadata?.phone}`}>
-                  {user?.user_metadata?.phone}
-                </a>
+                <p>{user?.email}</p>
+                <p>{user?.user_metadata?.phone}</p>
               </div>
               <div className="flex flex-col sm:flex-row sm:space-x-3 my-2 space-y-3 sm:space-y-0">
                 <Button
