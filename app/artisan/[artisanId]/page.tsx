@@ -6,10 +6,11 @@ import Skeleton from "react-loading-skeleton";
 import ArtisanDetails from "@/components/ArtisanDetails";
 import { User } from "@supabase/supabase-js";
 import { IoMdArrowBack } from "react-icons/io";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const Artisan = ({ params }: { params: { artisanId: string } }) => {
   const id: string = params.artisanId;
+  const router = useRouter();
   const [artisan, setArtisan] = useState<userDetails[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -72,10 +73,15 @@ const Artisan = ({ params }: { params: { artisanId: string } }) => {
       <section className="w-[95%] sm:w-[90%] md:w-[85%] lg:w-[75%] mx-auto max-w-[1600px]">
         <div className="bg-white relative my-4 h-[100%] sm:min-h-[calc(90vh-80px)] rounded-xl p-4 sm:p-8 md:p-12">
           <div className="absolute top-4 left-4">
-            <Link href="/artisans" className="flex space-x-2 items-center mb-4">
+            <div
+              onClick={() => {
+                router.replace("/artisan-profile");
+              }}
+              className="flex space-x-2 cursor-pointer items-center mb-4"
+            >
               <IoMdArrowBack />
               <p>Back</p>
-            </Link>
+            </div>
           </div>
           {error && <>{errorMessage}</>}
           {isLoading && !error ? (

@@ -39,6 +39,7 @@ export interface Booking {
   id: string;
   artisan_id: string;
   pending_contract: BookingDetails[];
+  completed_contract: BookingDetails[];
 }
 
 export interface BookingDetails {
@@ -48,6 +49,7 @@ export interface BookingDetails {
   client_image?: string;
   phone?: string;
   date?: string;
+  completed_date?: string;
   status: "pending" | "approved" | "declined";
 }
 
@@ -56,4 +58,5 @@ export interface BookingData {
   artisan_id: string;
   pending_contract: BookingDetails[];
   active_contract: BookingDetails[];
+  completed_contract: BookingDetails[];
 }

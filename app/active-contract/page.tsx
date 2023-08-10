@@ -2,7 +2,7 @@
 
 import supabase from "@/lib/supabase";
 import { useCallback, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { BookingData, BookingDetails } from "@/types";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -18,11 +18,11 @@ import {
 } from "@/components/ui/table";
 import FetchArtisanImage from "@/components/FetchArtisanImage";
 import { IoMdArrowBack } from "react-icons/io";
-import Link from "next/link";
 
 const ActiveContract = () => {
   const searchParams = useSearchParams();
   const artisanId = searchParams.get("id") ?? "";
+  const router = useRouter();
   const [bookedClients, setBookedClients] = useState<BookingData[]>([]);
   const [activeContracts, setActiveContracts] = useState<BookingDetails[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -187,6 +187,28 @@ const ActiveContract = () => {
         return;
       }
 
+      const completedClient = bookingToUpdate.active_contract.find(
+        (client) => client.client_id === clientId
+      );
+
+      if (!completedClient) {
+        console.error("Client not found in the active_contract.");
+        return;
+      }
+      const date = new Date();
+
+      const formattedDate = `${date.getFullYear()}-${
+        date.getMonth() + 1
+      }-${date.getDate()}`;
+
+      // Update the completed client's date to the current date
+      completedClient.completed_date = formattedDate;
+      // Move the completed client to work_history
+      const updatedWorkHistory = [
+        ...(bookingToUpdate.completed_contract || []),
+        completedClient,
+      ];
+
       const updatedActiveContract = bookingToUpdate.active_contract.filter(
         (client) => client.client_id !== clientId
       );
@@ -196,11 +218,14 @@ const ActiveContract = () => {
         .from("bookings")
         .update({
           active_contract: updatedActiveContract,
+          completed_contract: updatedWorkHistory, // Add the completed client to work_history
         })
         .eq("id", bookingToUpdate.id);
 
       if (error) {
         throw error;
+      } else {
+        console.log("Moved to work history");
       }
 
       // Update the bookedClients state with the updated data
@@ -209,27 +234,33 @@ const ActiveContract = () => {
           ? {
               ...booking,
               active_contract: updatedActiveContract,
+              completed_contract: updatedWorkHistory, // Add the completed client to work_history
             }
           : booking
       );
       setBookedClients(updatedClients);
+      console.log(bookedClients);
+
+      getActiveContracts();
+      getContracts();
     } catch (error: any) {
       console.error("Error completing project:", error.message);
     }
   };
-
   return (
     <>
       <section className="w-[95%] sm:w-[90%] md:w-[85%] lg:w-[75%] mx-auto max-w-[1600px]">
         <div className="bg-white relative my-4 h-[100%] sm:min-h-[calc(90vh-80px)] rounded-xl p-4 sm:p-8 md:p-12">
           <div className="absolute top-4 left-4">
-            <Link
-              href="/artisan-profile"
-              className="flex space-x-2 items-center mb-4"
+            <div
+              onClick={() => {
+                router.replace("/artisan-profile");
+              }}
+              className="flex space-x-2 cursor-pointer items-center mb-4"
             >
               <IoMdArrowBack />
               <p>Back</p>
-            </Link>
+            </div>
           </div>
           <Tabs defaultValue="pending-contract" className="w-full mt-6">
             <TabsList className="grid w-full grid-cols-2">
@@ -241,7 +272,11 @@ const ActiveContract = () => {
             <TabsContent value="pending-contract">
               {bookedClients.length === 0 ? (
                 <p>No pending contracts available.</p>
-              ) : (
+              ) : bookedClients.some((booking) =>
+                  booking.pending_contract.some(
+                    (client) => client.status === "pending"
+                  )
+                ) ? (
                 <Table>
                   <TableCaption>A list of your pending contracts.</TableCaption>
                   <TableHeader>
@@ -317,12 +352,17 @@ const ActiveContract = () => {
                     )}
                   </TableBody>
                 </Table>
+              ) : (
+                <p>No pending contracts available.</p>
               )}
             </TabsContent>
+
             <TabsContent value="active-contract">
               {activeContracts?.length === 0 ? (
                 <p>No active contracts available.</p>
-              ) : (
+              ) : activeContracts.some(
+                  (client) => client.status === "approved"
+                ) ? (
                 <Table>
                   <TableCaption>A list of your active contracts.</TableCaption>
                   <TableHeader>
@@ -384,6 +424,8 @@ const ActiveContract = () => {
                       ))}
                   </TableBody>
                 </Table>
+              ) : (
+                <p>No active contracts available.</p>
               )}
             </TabsContent>
           </Tabs>
