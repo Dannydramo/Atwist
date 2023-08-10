@@ -60,9 +60,12 @@ const ArtisanProfile = () => {
                 <p className="text-lg sm:text-xl md:text-2xl font-semibold mb-1 md:mb-2">
                   {user?.user_metadata?.full_name}
                 </p>
-                <p className="mb-2 text-base md:text-lg ">
-                  <CiLocationOn /> {userDetails?.location}
-                </p>
+                {userDetails?.location && (
+                  <p className="mb-2 flex items-center text-base md:text-lg ">
+                    <CiLocationOn className="h-[20px] w-[20px]" />
+                    {userDetails.location}
+                  </p>
+                )}
               </div>
             </div>
             <div className="flex flex-col sm:flex-row my-4 sm:justify-between">
@@ -72,34 +75,42 @@ const ArtisanProfile = () => {
                 <p>{user?.user_metadata?.phone}</p>
               </div>
               <div className="flex space-x-3">
-                <a
-                  href={`${userDetails?.facebook}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <BiLogoFacebook />
-                </a>
-                <a
-                  href={`${userDetails?.linkedIn}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <BiLogoLinkedin />
-                </a>
-                <a
-                  href={`${userDetails?.twitter}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <BiLogoTwitter />
-                </a>
-                <a
-                  href={`${userDetails?.instagram}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <BiLogoInstagramAlt />
-                </a>
+                {userDetails?.facebook && (
+                  <a
+                    href={`${userDetails.facebook}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <BiLogoFacebook className="h-[30px] w-[30px]" />
+                  </a>
+                )}
+                {userDetails?.linkedIn && (
+                  <a
+                    href={`${userDetails.linkedIn}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <BiLogoLinkedin className="h-[30px] w-[30px]" />
+                  </a>
+                )}
+                {userDetails?.twitter && (
+                  <a
+                    href={`${userDetails.twitter}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <BiLogoTwitter className="h-[30px] w-[30px]" />
+                  </a>
+                )}
+                {userDetails?.instagram && (
+                  <a
+                    href={`${userDetails.instagram}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <BiLogoInstagramAlt className="h-[30px] w-[30px]" />
+                  </a>
+                )}
               </div>
               <div className="flex flex-col sm:flex-row sm:space-x-3 my-2 space-y-3 sm:space-y-0">
                 <Button

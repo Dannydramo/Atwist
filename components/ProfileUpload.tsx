@@ -168,7 +168,7 @@ const ProfileUpload = ({ userId, edit }: UserId) => {
     <>
       <div className="">
         {profileImage ? (
-          <div className="relative w-[100px]">
+          <div className="relative w-[70px] sm:w-[80px] md:w-[100px]">
             <div className="rounded-[90%] w-[50px] h-[50px] sm:w-[80px] sm:h-[80px] md:w-[100px] md:h-[100px] overflow-hidden">
               <Image
                 src={profileImage}
@@ -181,9 +181,9 @@ const ProfileUpload = ({ userId, edit }: UserId) => {
             </div>
 
             {edit && (
-              <div className="absolute bottom-0 right-0 h-[50px] w-[50px] overflow-hidden">
+              <div className="absolute bottom-0 right-0 h-[40px] w-[40px] overflow-hidden">
                 <div className="relative">
-                  <AiOutlineCamera className="w-full h-full" />
+                  <AiOutlineCamera className="w-[40px] h-[40px]" />
                   <Input
                     type="file"
                     className="w-full h-full absolute cursor-pointer bottom-0 right-0 z-12 opacity-0"

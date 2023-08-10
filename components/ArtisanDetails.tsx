@@ -169,8 +169,8 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
               {full_name}
             </p>
             {location && (
-              <p className="mb-2 text-sm sm:text-base md:text-lg ">
-                <CiLocationOn />
+              <p className="mb-2 flex items-center space-x-2 text-sm sm:text-base md:text-lg ">
+                <CiLocationOn className="h-[20px] w-[20px]" />
                 {location}
               </p>
             )}
@@ -184,22 +184,22 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
         <div className="flex space-x-3">
           {facebook && (
             <a href={`${facebook}`} target="_blank" rel="noopener noreferrer">
-              <BiLogoFacebook />
+              <BiLogoFacebook className="h-[30px] w-[30px]" />
             </a>
           )}
           {linkedIn && (
             <a href={`${linkedIn}`} target="_blank" rel="noopener noreferrer">
-              <BiLogoLinkedin />
+              <BiLogoLinkedin className="h-[30px] w-[30px]" />
             </a>
           )}
           {twitter && (
             <a href={`${twitter}`} target="_blank" rel="noopener noreferrer">
-              <BiLogoTwitter />
+              <BiLogoTwitter className="h-[30px] w-[30px]" />
             </a>
           )}
           {instagram && (
             <a href={`${instagram}`} target="_blank" rel="noopener noreferrer">
-              <BiLogoInstagramAlt />
+              <BiLogoInstagramAlt className="h-[30px] w-[30px]" />
             </a>
           )}
         </div>
