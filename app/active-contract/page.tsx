@@ -17,6 +17,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import FetchArtisanImage from "@/components/FetchArtisanImage";
+import { IoMdArrowBack } from "react-icons/io";
+import Link from "next/link";
 
 const ActiveContract = () => {
   const searchParams = useSearchParams();
@@ -219,8 +221,17 @@ const ActiveContract = () => {
   return (
     <>
       <section className="w-[95%] sm:w-[90%] md:w-[85%] lg:w-[75%] mx-auto max-w-[1600px]">
-        <div className="bg-white my-4 h-[100%] sm:min-h-[calc(90vh-80px)] rounded-xl p-4 sm:p-8 md:p-12">
-          <Tabs defaultValue="pending-contract" className="w-full">
+        <div className="bg-white relative my-4 h-[100%] sm:min-h-[calc(90vh-80px)] rounded-xl p-4 sm:p-8 md:p-12">
+          <div className="absolute top-4 left-4">
+            <Link
+              href="/artisan-profile"
+              className="flex space-x-2 items-center mb-4"
+            >
+              <IoMdArrowBack />
+              <p>Back</p>
+            </Link>
+          </div>
+          <Tabs defaultValue="pending-contract" className="w-full mt-6">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="pending-contract">
                 Pending Contract

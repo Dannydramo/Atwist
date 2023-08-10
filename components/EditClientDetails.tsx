@@ -2,7 +2,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import supabase from "@/lib/supabase";
 import ProfileUpload from "@/components/ProfileUpload";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
@@ -17,7 +16,6 @@ interface editDetail {
 const EditClientDetails = ({ userId, setEditPopUp }: editDetail) => {
   const [updateProfileDetails, setUpdateProfileDetails] = useState({
     locationText: "",
-    descriptionText: "",
     facebookLink: "",
     instagramLink: "",
     twitterLink: "",
@@ -45,7 +43,6 @@ const EditClientDetails = ({ userId, setEditPopUp }: editDetail) => {
           setUserDetails(data[0]);
           setUpdateProfileDetails({
             locationText: userDetails?.location ?? "",
-            descriptionText: userDetails?.description ?? "",
             facebookLink: userDetails?.facebook ?? "",
             instagramLink: userDetails?.instagram ?? "",
             twitterLink: userDetails?.twitter ?? "",
@@ -58,7 +55,6 @@ const EditClientDetails = ({ userId, setEditPopUp }: editDetail) => {
     };
     fetchUserDetails();
   }, [
-    userDetails?.description,
     userDetails?.facebook,
     userDetails?.instagram,
     userDetails?.linkedIn,
@@ -69,7 +65,6 @@ const EditClientDetails = ({ userId, setEditPopUp }: editDetail) => {
 
   const handleUpdate = async () => {
     const {
-      descriptionText,
       locationText,
       twitterLink,
       linkedinLink,
@@ -79,7 +74,6 @@ const EditClientDetails = ({ userId, setEditPopUp }: editDetail) => {
     try {
       const { error } = await supabase.from("profiles").upsert({
         id: userId,
-        description: descriptionText,
         loaction: locationText,
         twitter: twitterLink,
         linkedIn: linkedinLink,
@@ -111,17 +105,7 @@ const EditClientDetails = ({ userId, setEditPopUp }: editDetail) => {
             />
 
             <ProfileUpload userId={userId} edit={editProfileImage} />
-            <Textarea
-              value={updateProfileDetails.descriptionText}
-              placeholder="Enter bio"
-              className="text-base my-3"
-              onChange={(e) => {
-                setUpdateProfileDetails({
-                  ...updateProfileDetails,
-                  descriptionText: e.target.value,
-                });
-              }}
-            />
+
             <Input
               value={updateProfileDetails.locationText}
               className="text-base my-3 border-t-none outline-none"

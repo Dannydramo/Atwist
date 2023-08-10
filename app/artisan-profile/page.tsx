@@ -31,7 +31,7 @@ const ArtisanProfile = () => {
       setUser(user);
 
       if (!user) {
-        router.push("/login");
+        router.replace("/login");
       } else {
         const { data, error } = await supabase
           .from("profiles")
@@ -69,49 +69,52 @@ const ArtisanProfile = () => {
               </div>
             </div>
             <div className="flex flex-col sm:flex-row my-4 sm:justify-between">
-              <div className="flex flex-col space-y-1 text-base">
-                <p>{user?.user_metadata?.occupation_name}</p>
-                <p>{user?.email}</p>
-                <p>{user?.user_metadata?.phone}</p>
+              <div>
+                <div className="flex flex-col space-y-1 text-base">
+                  <p>{user?.user_metadata?.occupation_name}</p>
+                  <p>{user?.email}</p>
+                  <p>{user?.user_metadata?.phone}</p>
+                </div>
+                <div className="flex space-x-3">
+                  {userDetails?.facebook && (
+                    <a
+                      href={`${userDetails.facebook}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <BiLogoFacebook className="h-[30px] w-[30px]" />
+                    </a>
+                  )}
+                  {userDetails?.linkedIn && (
+                    <a
+                      href={`${userDetails.linkedIn}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <BiLogoLinkedin className="h-[30px] w-[30px]" />
+                    </a>
+                  )}
+                  {userDetails?.twitter && (
+                    <a
+                      href={`${userDetails.twitter}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <BiLogoTwitter className="h-[30px] w-[30px]" />
+                    </a>
+                  )}
+                  {userDetails?.instagram && (
+                    <a
+                      href={`${userDetails.instagram}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <BiLogoInstagramAlt className="h-[30px] w-[30px]" />
+                    </a>
+                  )}
+                </div>
               </div>
-              <div className="flex space-x-3">
-                {userDetails?.facebook && (
-                  <a
-                    href={`${userDetails.facebook}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <BiLogoFacebook className="h-[30px] w-[30px]" />
-                  </a>
-                )}
-                {userDetails?.linkedIn && (
-                  <a
-                    href={`${userDetails.linkedIn}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <BiLogoLinkedin className="h-[30px] w-[30px]" />
-                  </a>
-                )}
-                {userDetails?.twitter && (
-                  <a
-                    href={`${userDetails.twitter}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <BiLogoTwitter className="h-[30px] w-[30px]" />
-                  </a>
-                )}
-                {userDetails?.instagram && (
-                  <a
-                    href={`${userDetails.instagram}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <BiLogoInstagramAlt className="h-[30px] w-[30px]" />
-                  </a>
-                )}
-              </div>
+
               <div className="flex flex-col sm:flex-row sm:space-x-3 my-2 space-y-3 sm:space-y-0">
                 <Button
                   onClick={() => {

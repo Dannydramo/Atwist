@@ -1,8 +1,16 @@
-import { useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
 import EditClientDetails from "./EditClientDetails";
 import ProfileUpload from "./ProfileUpload";
 import { Button } from "./ui/button";
-
+import {
+  BiLogoFacebook,
+  BiLogoInstagramAlt,
+  BiLogoLinkedin,
+  BiLogoTwitter,
+} from "react-icons/bi";
+import supabase from "@/lib/supabase";
+import { userDetails } from "@/types";
 interface clientProfile {
   userId: string;
   userName: string;
@@ -11,6 +19,23 @@ interface clientProfile {
 
 const ClientDetails = ({ userId, userName, userPhone }: clientProfile) => {
   const [editPopUp, setEditPopUp] = useState(false);
+  const [userDetails, setUserDetails] = useState<userDetails>();
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select()
+        .eq("id", userId);
+
+      if (data) {
+        setUserDetails(data[0]);
+      } else {
+        console.log(error.message);
+      }
+    };
+    fetchUserDetails();
+  }, [userId]);
   return (
     <section>
       {editPopUp && (
@@ -22,6 +47,44 @@ const ClientDetails = ({ userId, userName, userPhone }: clientProfile) => {
         <div className="my-3">
           <p>{userName}</p>
           <p>{userPhone}</p>
+        </div>
+        <div className="flex my-3 space-x-3">
+          {userDetails?.facebook && (
+            <a
+              href={`${userDetails.facebook}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <BiLogoFacebook className="h-[30px] w-[30px]" />
+            </a>
+          )}
+          {userDetails?.linkedIn && (
+            <a
+              href={`${userDetails.linkedIn}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <BiLogoLinkedin className="h-[30px] w-[30px]" />
+            </a>
+          )}
+          {userDetails?.twitter && (
+            <a
+              href={`${userDetails.twitter}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <BiLogoTwitter className="h-[30px] w-[30px]" />
+            </a>
+          )}
+          {userDetails?.instagram && (
+            <a
+              href={`${userDetails.instagram}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <BiLogoInstagramAlt className="h-[30px] w-[30px]" />
+            </a>
+          )}
         </div>
         <Button
           onClick={() => setEditPopUp(true)}

@@ -51,7 +51,7 @@ const Artisans = () => {
         console.log(user?.id);
 
         if (!user) {
-          router.push("/login");
+          router.replace("/login");
           console.log("No user found");
         } else {
           const fetchClientDetails = async () => {

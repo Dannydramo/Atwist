@@ -76,7 +76,7 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
         setRequestContent("Request Pending");
         setIsButtonDisabled(true);
       } else if (
-        existingBooking[0].active_contract.some(
+        existingBooking[0].active_contract?.some(
           (client) => client.client_id === user?.id
         )
       ) {
@@ -115,15 +115,6 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
       });
       setRequestContent("Making Request");
       setIsButtonDisabled(true);
-      // let bookedClient: any[] = [];
-
-      // if (existingBooking && existingBooking.length > 0) {
-      //   bookedClient = existingBooking[0].pending_contract || [];
-      //   setLoading(false);
-      //   setRequestContent("Request Sent");
-      // }
-
-      // bookedClient = [...bookedClient, clientDetails];
 
       const bookedClient = [
         ...(existingBooking[0]?.pending_contract || []),
@@ -161,7 +152,7 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
 
   return (
     <section>
-      <div>
+      <div className="mt-8">
         <div className="flex items-center space-x-4">
           <FetchArtisanImage avatarUrl={avatar_url} />
           <div>
@@ -176,7 +167,7 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
             )}
           </div>
         </div>
-        <div className="flex flex-col space-y-1 text-base">
+        <div className="flex flex-col mt-2 space-y-1 text-base">
           <p>{occupation_name}</p>
           <a href={`mailto:${email}`}>{email}</a>
           <a href={`tel:${phone}`}>{phone}</a>
