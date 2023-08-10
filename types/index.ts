@@ -2,14 +2,7 @@ export interface RegisterDetail {
   fullName: string;
   password: string;
   phoneNo: string;
-  occupation: string;
-  email: string;
-}
-
-export interface RegisterClientDetail {
-  fullName: string;
-  password: string;
-  phoneNo: string;
+  occupation?: string;
   email: string;
 }
 

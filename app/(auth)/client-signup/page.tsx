@@ -6,12 +6,12 @@ import { Button } from "@/components/ui/button";
 import { InputNo } from "@/components/InputNo";
 import supabase from "@/lib/supabase";
 import { useRouter } from "next/navigation";
-import { RegisterClientDetail } from "@/types";
+import { RegisterDetail } from "@/types";
 import { useToast } from "@/components/ui/use-toast";
 
 const ClientSignUp = () => {
   const [registerClientDetail, setRegisterClientDetail] =
-    useState<RegisterClientDetail>({
+    useState<RegisterDetail>({
       fullName: "",
       password: "",
       email: "",
