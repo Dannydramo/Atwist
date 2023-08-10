@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 import FetchArtisanImage from "./FetchArtisanImage";
 import Proof from "./Proof";
 import supabase from "@/lib/supabase";
-import { userDetails, Booking, BookingDetails } from "@/types";
+import { userDetails, BookingData, BookingDetails } from "@/types";
 import {
   BiLogoFacebook,
   BiLogoLinkedin,
@@ -39,7 +39,7 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
     instagram,
   } = artisanDetails;
   const artisanId = id;
-  const [existingBooking, setExistingBooking] = useState<Booking[]>([]);
+  const [existingBooking, setExistingBooking] = useState<BookingData[]>([]);
   const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
   const [requestContent, setRequestContent] = useState<string>("");

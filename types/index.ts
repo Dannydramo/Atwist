@@ -34,14 +34,6 @@ export interface userDetails {
   instagram: string;
 }
 
-export interface Booking {
-  active_contract: BookingDetails[];
-  id: string;
-  artisan_id: string;
-  pending_contract: BookingDetails[];
-  completed_contract: BookingDetails[];
-}
-
 export interface BookingDetails {
   client_id?: string;
   client_name?: string;
