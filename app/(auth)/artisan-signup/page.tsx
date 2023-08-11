@@ -55,7 +55,7 @@ const ArtisanSignup = () => {
         fullName.trim() === "" ||
         password.trim() === "" ||
         phoneNo.trim() === "" ||
-        occupation.trim() === ""
+        occupation?.trim() === ""
       ) {
         console.log("Please enter all required fields");
         setInputValidity((prevState) => ({
@@ -63,7 +63,7 @@ const ArtisanSignup = () => {
           fullName: fullName.trim() === "",
           password: password.trim() === "",
           phoneNo: phoneNo.trim() === "",
-          occupation: occupation.trim() === "",
+          occupation: occupation?.trim() === "",
         }));
       }
       // Check if the password value is the same with the Confirm password value
@@ -171,7 +171,7 @@ const ArtisanSignup = () => {
     } else if (inputField === "occupation") {
       setInputValidity((prevState) => ({
         ...prevState,
-        occupation: occupation.trim() === "",
+        occupation: occupation?.trim() === "",
       }));
     } else if (inputField === "email") {
       setInputValidity((prevState) => ({
