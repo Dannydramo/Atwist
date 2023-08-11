@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import supabase from "@/lib/supabase";
 import ProfileUpload from "@/components/ProfileUpload";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,9 +9,10 @@ import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { userDetails } from "@/types";
 import { IoMdArrowBack } from "react-icons/io";
-import Link from "next/link";
+
 const EditProfile = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const userId = searchParams.get("id") ?? "";
   const [updateProfileDetails, setUpdateProfileDetails] = useState({
     locationText: "",
@@ -105,13 +106,15 @@ const EditProfile = () => {
       <section className="w-[95%] sm:w-[80%] md:w-[75%] lg:w-[65%] mx-auto max-w-[1600px]">
         <div className="bg-white relative my-4 h-[100%] sm:min-h-[calc(90vh-80px)] rounded-xl p-4 sm:p-8 md:p-12">
           <div className="absolute top-4 left-4">
-            <Link
-              href="/artisan-profile"
-              className="flex space-x-2 items-center"
+            <div
+              onClick={() => {
+                router.back();
+              }}
+              className="flex space-x-2 cursor-pointer items-center mb-4"
             >
               <IoMdArrowBack />
               <p>Back</p>
-            </Link>
+            </div>
           </div>
           <div className="mt-8">
             <ProfileUpload userId={userId} edit={editProfileImage} />

@@ -75,7 +75,7 @@ const Artisan = ({ params }: { params: { artisanId: string } }) => {
           <div className="absolute top-4 left-4">
             <div
               onClick={() => {
-                router.replace("/artisan-profile");
+                router.back();
               }}
               className="flex space-x-2 cursor-pointer items-center mb-4"
             >

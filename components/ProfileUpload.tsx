@@ -38,14 +38,12 @@ const ProfileUpload = ({ userId, edit }: UserId) => {
             if (error) {
               throw error;
             } else {
-              let { data, error, status } = await supabase
+              let { data } = await supabase
                 .from("profiles")
                 .select(`profile_image`)
                 .eq("id", userId)
                 .single();
               if (data) {
-                console.log(data?.profile_image);
-
                 setProfileImage(data?.profile_image);
               }
             }
