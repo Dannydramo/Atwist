@@ -52,7 +52,7 @@ const Login = () => {
         const occupationName = user?.user_metadata?.occupation_name;
         if (occupationName) {
           // If Artisan, go to the Artisan Profile Page
-          router.push("/artisan-profile");
+          router.push("/personal-profile");
         } else {
           // If Client, go to the see all Artisans Page
           router.push("/artisans");
@@ -125,7 +125,7 @@ const Login = () => {
               <Input
                 type="password"
                 name="password"
-                className={`w-full my-6 h-12 bg-[#ecebf382] text-base ${
+                className={`w-full mt-6 mb-1 h-12 bg-[#ecebf382] text-base ${
                   inputValidity.password ? "bg-[#fddddd]" : ""
                 }`}
                 placeholder="Enter Your Password"
@@ -134,9 +134,16 @@ const Login = () => {
                 onBlur={() => handleInputBlur("password")}
               />
 
+              <Link
+                href="/forgot-password"
+                className="text-[#6272B9] float-right"
+              >
+                Forgotten Password?
+              </Link>
+
               <Button
                 type="submit"
-                className="bg-[#6272B9] text-white text-base w-full text-center"
+                className="bg-[#6272B9] text-white mt-4 text-base w-full text-center"
                 disabled={inputValidity.email || inputValidity.password}
               >
                 {loading ? "Logging in.." : "Login"}

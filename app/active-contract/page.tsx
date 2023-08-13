@@ -4,20 +4,17 @@ import supabase from "@/lib/supabase";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { BookingData, BookingDetails } from "@/types";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
   TableBody,
   TableCaption,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import FetchArtisanImage from "@/components/FetchArtisanImage";
 import { IoMdArrowBack } from "react-icons/io";
+import TableContent from "@/components/TableContent";
 
 const ActiveContract = () => {
   const searchParams = useSearchParams();
@@ -203,6 +200,10 @@ const ActiveContract = () => {
 
       // Update the completed client's date to the current date
       completedClient.completed_date = formattedDate;
+
+      // Update client status to completed
+      completedClient.status = "completed";
+
       // Move the completed client to work_history
       const updatedWorkHistory = [
         ...(bookingToUpdate.completed_contract || []),
@@ -251,7 +252,7 @@ const ActiveContract = () => {
     <>
       <section className="w-[95%] sm:w-[90%] md:w-[85%] lg:w-[75%] mx-auto max-w-[1600px]">
         <div className="bg-white relative my-4 h-[100%] sm:min-h-[calc(90vh-80px)] rounded-xl p-4 sm:p-8 md:p-12">
-          <div className="absolute top-4 left-4">
+          <div className="absolute top-4 left-4 mb-4">
             <div
               onClick={() => {
                 router.back();
@@ -262,174 +263,128 @@ const ActiveContract = () => {
               <p>Back</p>
             </div>
           </div>
-          <Tabs defaultValue="pending-contract" className="w-full mt-6">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="pending-contract">
-                Pending Contract
-              </TabsTrigger>
-              <TabsTrigger value="active-contract">Active Contract</TabsTrigger>
-            </TabsList>
-            <TabsContent value="pending-contract">
-              {bookedClients.length === 0 ? (
-                <p>No pending contracts available.</p>
-              ) : bookedClients.some((booking) =>
-                  booking.pending_contract.some(
-                    (client) => client.status === "pending"
-                  )
-                ) ? (
-                <Table>
-                  <TableCaption>A list of your pending contracts.</TableCaption>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[30px]">S/N</TableHead>
-                      <TableHead>Client Name</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Client Phone No</TableHead>
-                      <TableHead>Booking Date</TableHead>
-                      <TableHead className="text-right">
-                        Client Status
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {bookedClients.map((booking) =>
-                      booking.pending_contract
-                        .filter((client) => client.status === "pending")
+          <div className="mt-4">
+            {" "}
+            <Tabs defaultValue="pending-contract" className="w-full mt-6">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="pending-contract">
+                  Pending Contract
+                </TabsTrigger>
+                <TabsTrigger value="active-contract">
+                  Active Contract
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="pending-contract">
+                {bookedClients.length === 0 ? (
+                  <p>No pending contracts available.</p>
+                ) : bookedClients?.some((booking) =>
+                    booking.pending_contract?.some(
+                      (client) => client.status === "pending"
+                    )
+                  ) ? (
+                  <Table>
+                    <TableCaption>
+                      A list of your pending contracts.
+                    </TableCaption>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="w-[30px]">S/N</TableHead>
+                        <TableHead>Client Name</TableHead>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Client Phone No</TableHead>
+                        <TableHead>Booking Date</TableHead>
+                        <TableHead className="text-right">
+                          Client Status
+                        </TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {bookedClients.map((booking) =>
+                        booking.pending_contract
+                          .filter((client) => client.status === "pending")
+                          .map((client, index) => (
+                            <TableRow key={client.client_id}>
+                              <TableContent
+                                avatarUrl={client?.client_image}
+                                clientName={client?.client_name}
+                                clientEmail={client?.contact_email}
+                                clientPhone={client?.phone}
+                                bookingDate={client?.date}
+                                clientStatus="pending"
+                                index={index}
+                                clientId={client?.client_id}
+                                handleApprove={handleApprove}
+                                handleDecline={handleDecline}
+                              />
+                            </TableRow>
+                          ))
+                      )}
+                    </TableBody>
+                  </Table>
+                ) : (
+                  <p>No pending contracts available.</p>
+                )}
+              </TabsContent>
+
+              <TabsContent value="active-contract">
+                {activeContracts?.length === 0 ? (
+                  <p>No active contracts available.</p>
+                ) : activeContracts?.some(
+                    (client) => client.status === "approved"
+                  ) ? (
+                  <Table>
+                    <TableCaption>
+                      A list of your active contracts.
+                    </TableCaption>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="w-[30px]">S/N</TableHead>
+                        <TableHead>Client Name</TableHead>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Client Phone No</TableHead>
+                        <TableHead>Booking Date</TableHead>
+                        <TableHead className="text-right">
+                          Client Status
+                        </TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {activeContracts
+                        ?.filter((client) => client.status === "approved")
                         .map((client, index) => (
                           <TableRow key={client.client_id}>
-                            <TableCell>{index + 1}</TableCell>
-                            <TableCell>
-                              <div className="flex items-center">
-                                {client.client_image ? (
-                                  <FetchArtisanImage
-                                    avatarUrl={client.client_image}
-                                    bookingImage={true}
-                                  />
-                                ) : (
-                                  <div className="w-[40px] h-[40px]">
-                                    <Image
-                                      src="/noprofile.jpg"
-                                      alt="Profile"
-                                      width={100}
-                                      height={100}
-                                      priority
-                                    />
-                                  </div>
-                                )}
-                                <div className="ml-2">{client.client_name}</div>
-                              </div>
-                            </TableCell>
-                            <TableCell>{client.contact_email}</TableCell>
-                            <TableCell>{client.phone}</TableCell>
-
-                            <TableCell>{client.date}</TableCell>
-                            {client.status === "pending" && (
-                              <TableCell className="justify-end text-right flex space-x-1">
-                                <Button
-                                  className="bg-green-500 rounded-3xl hover:bg-green-500"
-                                  id={client.client_id}
-                                  onClick={() =>
-                                    client.client_id &&
-                                    handleApprove(client?.client_id)
-                                  }
-                                >
-                                  Approve
-                                </Button>
-                                <Button
-                                  className="bg-red-500 rounded-3xl hover:bg-red-500"
-                                  id={client.client_id}
-                                  onClick={() =>
-                                    client.client_id &&
-                                    handleDecline(client?.client_id)
-                                  }
-                                >
-                                  Decline
-                                </Button>
-                              </TableCell>
-                            )}
+                            <TableContent
+                              avatarUrl={client?.client_image}
+                              clientName={client?.client_name}
+                              clientEmail={client?.contact_email}
+                              clientPhone={client?.phone}
+                              bookingDate={client?.date}
+                              clientStatus="approved"
+                              index={index}
+                              clientId={client?.client_id}
+                              handleCompleted={handleCompleted}
+                            />
                           </TableRow>
-                        ))
-                    )}
-                  </TableBody>
-                </Table>
-              ) : (
-                <p>No pending contracts available.</p>
-              )}
-            </TabsContent>
-
-            <TabsContent value="active-contract">
-              {activeContracts?.length === 0 ? (
-                <p>No active contracts available.</p>
-              ) : activeContracts.some(
-                  (client) => client.status === "approved"
-                ) ? (
-                <Table>
-                  <TableCaption>A list of your active contracts.</TableCaption>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[30px]">S/N</TableHead>
-                      <TableHead>Client Name</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Client Phone No</TableHead>
-                      <TableHead>Booking Date</TableHead>
-                      <TableHead className="text-right">
-                        Client Status
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {activeContracts
-                      ?.filter((client) => client.status === "approved")
-                      .map((client, index) => (
-                        <TableRow key={client.client_id}>
-                          <TableCell>{index + 1}</TableCell>
-                          <TableCell>
-                            <div className="flex items-center">
-                              {client.client_image ? (
-                                <FetchArtisanImage
-                                  avatarUrl={client.client_image}
-                                  bookingImage={true}
-                                />
-                              ) : (
-                                <div className="w-[40px] h-[40px]">
-                                  <Image
-                                    src="/noprofile.jpg"
-                                    alt="Profile"
-                                    width={100}
-                                    height={100}
-                                    priority
-                                  />
-                                </div>
-                              )}
-                              <div className="ml-2">{client.client_name}</div>
-                            </div>
-                          </TableCell>
-                          <TableCell>{client.contact_email}</TableCell>
-                          <TableCell>{client.phone}</TableCell>
-
-                          <TableCell>{client.date}</TableCell>
-                          {client.status === "approved" && (
-                            <TableCell className="text-right">
-                              <Button
-                                onClick={() =>
-                                  client.client_id &&
-                                  handleCompleted(client.client_id)
-                                }
-                              >
-                                Complete Task
-                              </Button>
-                            </TableCell>
-                          )}
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              ) : (
-                <p>No active contracts available.</p>
-              )}
-            </TabsContent>
-          </Tabs>
-          {error && <p>{error}</p>}
+                        ))}
+                    </TableBody>
+                  </Table>
+                ) : (
+                  <p>No active contracts available.</p>
+                )}
+              </TabsContent>
+            </Tabs>
+            <div className="text-right">
+              <div
+                className="cursor-pointer"
+                onClick={() => {
+                  router.push(`/work-history?id=${artisanId}`);
+                }}
+              >
+                View Work History
+              </div>
+            </div>
+            {error && <p>{error}</p>}
+          </div>
         </div>
       </section>
     </>

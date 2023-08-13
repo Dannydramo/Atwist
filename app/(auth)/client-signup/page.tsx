@@ -8,6 +8,7 @@ import supabase from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { RegisterDetail } from "@/types";
 import { useToast } from "@/components/ui/use-toast";
+import ConfirmEmail from "@/components/ConfirmEmail";
 
 const ClientSignUp = () => {
   const [registerClientDetail, setRegisterClientDetail] =
@@ -30,7 +31,22 @@ const ClientSignUp = () => {
     email: false,
     phoneNo: false,
   });
+  const getURL = () => {
+    let url = process?.env?.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000/";
 
+    const updatePasswordPath = "login";
+
+    if (url === "http://localhost:3000/") {
+      url = `${url}${updatePasswordPath}`;
+    } else {
+      url = url.endsWith("/") ? url : `${url}/`;
+      url = `${url}${updatePasswordPath}`;
+    }
+
+    url = url.includes("http") ? url : `https://${url}`;
+
+    return url;
+  };
   const handleClientSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(registerClientDetail);
@@ -68,6 +84,7 @@ const ClientSignUp = () => {
           email,
           password,
           options: {
+            emailRedirectTo: getURL(),
             data: {
               full_name: fullName,
               phone: phoneNo,
@@ -79,7 +96,8 @@ const ClientSignUp = () => {
           throw error;
         }
         if (user) {
-          router.push("/artisans");
+          setConfirmEmailMessage(true);
+          // router.push("/artisans");
           try {
             const { error } = await supabase.from("profiles").upsert({
               id: user.id,
@@ -206,83 +224,87 @@ const ClientSignUp = () => {
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
               Signup
             </h1>
-            <form action="" onSubmit={handleClientSubmit}>
-              <div className="grid w-full my-6 items-center gap-1.5">
-                <Label htmlFor="fullName" className="text-base">
-                  Full Name
-                </Label>
-                <Input
-                  type="text"
-                  name="fullName"
-                  className={`w-full text-base h-12 bg-[#ecebf382] ${
-                    inputValidity.fullName ? "bg-[#fddddd]" : ""
-                  }`}
-                  placeholder="Enter your full name"
-                  value={registerClientDetail.fullName}
-                  onChange={(e) => handleInputChange(e, "fullName")}
-                  onBlur={() => handleInputBlur("fullName")}
-                />
-              </div>
-              <div className="grid w-full my-6 items-center gap-1.5">
-                <Label htmlFor="email" className="text-base">
-                  Email Address
-                </Label>
-                <Input
-                  type="email"
-                  name="email"
-                  className={`w-full h-12 text-base bg-[#ecebf382] ${
-                    inputValidity.email ? "bg-[#fddddd]" : ""
-                  }`}
-                  placeholder="Enter your email address"
-                  value={registerClientDetail.email}
-                  onChange={(e) => handleInputChange(e, "email")}
-                  onBlur={() => handleInputBlur("email")}
-                />
-              </div>
+            {!confrimEmailMessage ? (
+              <form action="" onSubmit={handleClientSubmit}>
+                <div className="grid w-full my-6 items-center gap-1.5">
+                  <Label htmlFor="fullName" className="text-base">
+                    Full Name
+                  </Label>
+                  <Input
+                    type="text"
+                    name="fullName"
+                    className={`w-full text-base h-12 bg-[#ecebf382] ${
+                      inputValidity.fullName ? "bg-[#fddddd]" : ""
+                    }`}
+                    placeholder="Enter your full name"
+                    value={registerClientDetail.fullName}
+                    onChange={(e) => handleInputChange(e, "fullName")}
+                    onBlur={() => handleInputBlur("fullName")}
+                  />
+                </div>
+                <div className="grid w-full my-6 items-center gap-1.5">
+                  <Label htmlFor="email" className="text-base">
+                    Email Address
+                  </Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    className={`w-full h-12 text-base bg-[#ecebf382] ${
+                      inputValidity.email ? "bg-[#fddddd]" : ""
+                    }`}
+                    placeholder="Enter your email address"
+                    value={registerClientDetail.email}
+                    onChange={(e) => handleInputChange(e, "email")}
+                    onBlur={() => handleInputBlur("email")}
+                  />
+                </div>
 
-              <InputNo
-                onValueChange={handleValueChange}
-                onHandleBlur={handleInputBlur}
-                phoneNoValidity={inputValidity.phoneNo}
-              />
-              <div className="grid w-full my-6 items-center gap-1.5">
-                <Label htmlFor="password" className="ext-base">
-                  Password
-                </Label>
-                <Input
-                  type="password"
-                  name="password"
-                  className={`w-full text-base h-12 bg-[#ecebf382] ${
-                    inputValidity.password ? "bg-[#fddddd]" : ""
-                  }`}
-                  placeholder="Enter your password"
-                  value={registerClientDetail.password}
-                  onChange={(e) => handleInputChange(e, "password")}
-                  onBlur={() => handleInputBlur("password")}
+                <InputNo
+                  onValueChange={handleValueChange}
+                  onHandleBlur={handleInputBlur}
+                  phoneNoValidity={inputValidity.phoneNo}
                 />
-              </div>
-              <div className="grid w-full my-6 items-center gap-1.5">
-                <Label htmlFor="confirmPassword" className="text-base">
-                  Confirm Password
-                </Label>
-                <Input
-                  type="password"
-                  name="confirmPassword"
-                  className={`w-full text-base h-12 bg-[#ecebf382] ${
-                    inputValidity.password ? "bg-[#fddddd]" : ""
-                  }`}
-                  placeholder="Confirm your password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-              </div>
-              <Button
-                type="submit"
-                className="bg-[#6272B9] text-base text-white w-full text-center"
-              >
-                Submit
-              </Button>
-            </form>
+                <div className="grid w-full my-6 items-center gap-1.5">
+                  <Label htmlFor="password" className="ext-base">
+                    Password
+                  </Label>
+                  <Input
+                    type="password"
+                    name="password"
+                    className={`w-full text-base h-12 bg-[#ecebf382] ${
+                      inputValidity.password ? "bg-[#fddddd]" : ""
+                    }`}
+                    placeholder="Enter your password"
+                    value={registerClientDetail.password}
+                    onChange={(e) => handleInputChange(e, "password")}
+                    onBlur={() => handleInputBlur("password")}
+                  />
+                </div>
+                <div className="grid w-full my-6 items-center gap-1.5">
+                  <Label htmlFor="confirmPassword" className="text-base">
+                    Confirm Password
+                  </Label>
+                  <Input
+                    type="password"
+                    name="confirmPassword"
+                    className={`w-full text-base h-12 bg-[#ecebf382] ${
+                      inputValidity.password ? "bg-[#fddddd]" : ""
+                    }`}
+                    placeholder="Confirm your password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  className="bg-[#6272B9] text-base text-white w-full text-center"
+                >
+                  Submit
+                </Button>
+              </form>
+            ) : (
+              <ConfirmEmail emailName={registerClientDetail.email} />
+            )}
           </div>
         </div>
       </div>

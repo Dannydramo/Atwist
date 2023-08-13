@@ -10,7 +10,9 @@ export interface LoginDetail {
   password: string;
   email: string;
 }
-
+export interface ResetDetail {
+  email: string;
+}
 export interface userDetails {
   id: string;
   full_name: string;
@@ -35,7 +37,7 @@ export interface BookingDetails {
   phone?: string;
   date?: string;
   completed_date?: string;
-  status: "pending" | "approved" | "declined";
+  status: "pending" | "approved" | "completed";
 }
 
 export interface BookingData {
@@ -44,4 +46,18 @@ export interface BookingData {
   pending_contract: BookingDetails[];
   active_contract: BookingDetails[];
   completed_contract: BookingDetails[];
+}
+
+export interface TableContentProps {
+  avatarUrl?: string;
+  clientName?: string;
+  clientEmail?: string;
+  clientPhone?: string;
+  bookingDate?: string;
+  clientStatus: "pending" | "approved";
+  index: number;
+  clientId?: string;
+  handleApprove?: (clientId: string) => void;
+  handleDecline?: (clientId: string) => void;
+  handleCompleted?: (clientId: string) => void;
 }
