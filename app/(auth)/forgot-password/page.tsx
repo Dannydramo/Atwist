@@ -10,32 +10,13 @@ const ForgotPassword = () => {
   const [forgotEmail, setForgotEmail] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
   const { toast } = useToast();
-  const getURL = () => {
-    let url = process?.env?.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000/";
-
-    const updatePasswordPath = "update-password";
-
-    if (url === "http://localhost:3000/") {
-      url = `${url}${updatePasswordPath}`;
-    } else {
-      url = url.endsWith("/") ? url : `${url}/`;
-      url = `${url}${updatePasswordPath}`;
-    }
-
-    url = url.includes("http") ? url : `https://${url}`;
-
-    return url;
-  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       setLoading(true);
       const { data, error } = await supabase.auth.resetPasswordForEmail(
-        forgotEmail,
-        {
-          redirectTo: getURL(),
-        }
+        forgotEmail
       );
       if (error) {
         throw error;

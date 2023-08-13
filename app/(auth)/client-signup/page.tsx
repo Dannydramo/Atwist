@@ -31,22 +31,7 @@ const ClientSignUp = () => {
     email: false,
     phoneNo: false,
   });
-  const getURL = () => {
-    let url = process?.env?.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000/";
 
-    const updatePasswordPath = "login";
-
-    if (url === "http://localhost:3000/") {
-      url = `${url}${updatePasswordPath}`;
-    } else {
-      url = url.endsWith("/") ? url : `${url}/`;
-      url = `${url}${updatePasswordPath}`;
-    }
-
-    url = url.includes("http") ? url : `https://${url}`;
-
-    return url;
-  };
   const handleClientSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { fullName, password, email, phoneNo } = registerClientDetail;
@@ -83,7 +68,6 @@ const ClientSignUp = () => {
           email,
           password,
           options: {
-            emailRedirectTo: getURL(),
             data: {
               full_name: fullName,
               phone: phoneNo,
