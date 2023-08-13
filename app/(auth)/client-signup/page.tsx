@@ -49,7 +49,6 @@ const ClientSignUp = () => {
   };
   const handleClientSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(registerClientDetail);
     const { fullName, password, email, phoneNo } = registerClientDetail;
 
     try {
@@ -97,7 +96,6 @@ const ClientSignUp = () => {
         }
         if (user) {
           setConfirmEmailMessage(true);
-          // router.push("/artisans");
           try {
             const { error } = await supabase.from("profiles").upsert({
               id: user.id,

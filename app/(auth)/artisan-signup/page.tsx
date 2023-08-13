@@ -112,7 +112,6 @@ const ArtisanSignup = () => {
         }
 
         if (user) {
-          router.push("/personal-profile");
           setConfirmEmailMessage(true);
           console.log("User created successfully");
 

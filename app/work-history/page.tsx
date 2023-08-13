@@ -60,7 +60,7 @@ const WorkHistory = () => {
             <h1 className="my-4">Work Hisory</h1>
             {workHistory?.length === 0 ? (
               <p></p>
-            ) : workHistory.some((client) => client.status === "completed") ? (
+            ) : workHistory?.some((client) => client.status === "completed") ? (
               <div>
                 {workHistory
                   ?.filter((client) => client.status === "completed")
