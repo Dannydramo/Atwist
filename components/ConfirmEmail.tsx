@@ -6,7 +6,7 @@ interface ConfirmEmailProps {
 const ConfirmEmail = ({ emailName }: ConfirmEmailProps) => {
   return (
     <>
-      <Card className="w-full bg-[#ecebf382]">
+      <Card className="w-full bg-[#ecebf382] mt-4">
         <CardContent>
           <h1 className="my-2 text-2xl"> Email Confirmation Required</h1>
           <p className="my-2">Your account has been created successfully.</p>
