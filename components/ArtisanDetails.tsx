@@ -49,7 +49,7 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
     async function checkExistingBooking() {
       try {
         const { data, error } = await supabase
-          .from("bookings")
+          .from("booking")
           .select("*")
           .eq("artisan_id", artisanId);
 
@@ -120,9 +120,9 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
         ...(existingBooking[0]?.pending_contract || []),
         clientDetails,
       ];
-
+      setRequestContent("Request Sent");
       const { data: updatedBooking, error: bookingError } = await supabase
-        .from("bookings")
+        .from("booking")
         .upsert({
           id: artisanId,
           artisan_id: artisanId,

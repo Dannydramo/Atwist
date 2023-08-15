@@ -84,11 +84,7 @@ const ArtisanComponent: React.FC<ArtisansProps> = ({
   return (
     <>
       {allArtisans.map((artisan) => (
-        <Link
-          href={`/artisan/${artisan.id}/profile`}
-          key={artisan.id}
-          className=""
-        >
+        <Link href={`/artisan/${artisan.id}`} key={artisan.id} className="">
           <div className="bg-white rounded-xl p-4 my-4">
             <div className="flex items-center space-x-4">
               {artisan.profile_image ? (
