@@ -15,7 +15,7 @@ const Proof = ({ userId, artisanFullName, isClient }: UserId) => {
   const [images, setImages] = useState<any>([]);
 
   const imageUrl =
-    "https://ihesfwsnexcpihnikvgn.supabase.co/storage/v1/object/public/proof_of_occupation_images/";
+    "https://wpohczmajoaxjjxyttgk.supabase.co/storage/v1/object/public/proof_of_occupation_images/";
   const deleteImage = async (imageName: string) => {
     const { error } = await supabase.storage
       .from("proof_of_occupation_images")

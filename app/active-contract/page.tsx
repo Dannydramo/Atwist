@@ -27,7 +27,7 @@ const ActiveContract = () => {
   const getContracts = useCallback(async () => {
     try {
       const { data: bookingsData, error: bookingsError } = await supabase
-        .from("booking")
+        .from("bookings")
         .select("*")
         .eq("artisan_id", artisanId);
 
@@ -47,7 +47,7 @@ const ActiveContract = () => {
   const getActiveContracts = useCallback(async () => {
     try {
       const { data, error } = await supabase
-        .from("booking")
+        .from("bookings")
         .select("active_contract")
         .eq("id", artisanId);
 
@@ -102,7 +102,7 @@ const ActiveContract = () => {
 
       // Update the booking record in Supabase
       const { error } = await supabase
-        .from("booking")
+        .from("bookings")
         .update({
           pending_contract: updatedPendingContract,
           active_contract: updatedActiveContract,
@@ -148,7 +148,7 @@ const ActiveContract = () => {
 
       // Update the booking record in Supabase
       const { error } = await supabase
-        .from("booking")
+        .from("bookings")
         .update({
           pending_contract: updatedPendingContract,
         })
@@ -216,7 +216,7 @@ const ActiveContract = () => {
 
       // Update the booking record in Supabase
       const { error } = await supabase
-        .from("booking")
+        .from("bookings")
         .update({
           active_contract: updatedActiveContract,
           completed_contract: updatedWorkHistory, // Add the completed client to work_history

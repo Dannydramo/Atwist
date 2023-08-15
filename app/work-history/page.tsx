@@ -20,7 +20,7 @@ const WorkHistory = () => {
   const getActiveContracts = useCallback(async () => {
     try {
       const { data, error } = await supabase
-        .from("booking")
+        .from("bookings")
         .select("completed_contract")
         .eq("id", artisanId);
 
