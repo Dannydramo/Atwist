@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { InputNo } from "@/components/InputNo";
 import supabase from "@/lib/supabase";
-import { useRouter } from "next/navigation";
+
 import { RegisterDetail } from "@/types";
 import { useToast } from "@/components/ui/use-toast";
 import ConfirmEmail from "@/components/ConfirmEmail";
@@ -21,7 +21,7 @@ const ClientSignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confrimEmailMessage, setConfirmEmailMessage] =
     useState<boolean>(false);
-  const router = useRouter();
+
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const { toast } = useToast();
@@ -61,6 +61,10 @@ const ClientSignUp = () => {
           description: "Password cannot be password",
         });
       } else {
+        setLoading(true);
+        toast({
+          description: "Signing Up",
+        });
         const {
           data: { user },
           error,
@@ -79,6 +83,12 @@ const ClientSignUp = () => {
           throw error;
         }
         if (user) {
+          setLoading(false);
+          // Check if the user is an artisan or client
+          user &&
+            toast({
+              description: "Signed Up successfully",
+            });
           setConfirmEmailMessage(true);
           try {
             const { error } = await supabase.from("profiles").upsert({
@@ -93,11 +103,6 @@ const ClientSignUp = () => {
             }
           } catch (error: any) {
             console.log(error.message);
-            setError(true);
-            toast({
-              variant: "destructive",
-              description: error.message,
-            });
             setLoading(false);
           }
         }
@@ -281,7 +286,7 @@ const ClientSignUp = () => {
                   type="submit"
                   className="bg-[#6272B9] text-base text-white w-full text-center"
                 >
-                  Submit
+                  {loading ? "Signing Up" : "Sign Up"}
                 </Button>
               </form>
             ) : (

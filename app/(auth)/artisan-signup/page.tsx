@@ -5,7 +5,8 @@ import { RegisterDetail } from "@/types";
 import { FormEvent, useState } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
+
 import {
   Command,
   CommandEmpty,
@@ -34,6 +35,9 @@ const ArtisanSignup = () => {
     });
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
+  const { toast } = useToast();
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confrimEmailMessage, setConfirmEmailMessage] =
     useState<boolean>(false);
@@ -44,7 +48,6 @@ const ArtisanSignup = () => {
     phoneNo: false,
     occupation: false,
   });
-  const router = useRouter();
 
   const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -75,6 +78,10 @@ const ArtisanSignup = () => {
       }
       // If all fields are filled correctly, call the supabase signup function
       else {
+        setLoading(true);
+        toast({
+          description: "Signing Up",
+        });
         const {
           data: { user },
           error,
@@ -96,6 +103,10 @@ const ArtisanSignup = () => {
         }
 
         if (user) {
+          user &&
+            toast({
+              description: "Signed Up successfully",
+            });
           setConfirmEmailMessage(true);
           console.log("User created successfully");
 
@@ -117,8 +128,14 @@ const ArtisanSignup = () => {
           }
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      console.log(error.message);
+      setError(true);
+      toast({
+        variant: "destructive",
+        description: error.message,
+      });
+      setLoading(false);
     }
   };
 
@@ -358,7 +375,7 @@ const ArtisanSignup = () => {
                   type="submit"
                   className="bg-[#6272B9] text-base text-white w-full text-center"
                 >
-                  Submit
+                  {loading ? "Signing Up" : "Sign Up"}
                 </Button>
               </form>
             ) : (

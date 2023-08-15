@@ -60,7 +60,7 @@ const ActiveContract = () => {
       }
     } catch (error: any) {
       console.error("Error fetching active contracts:", error.message);
-      setError("Error fetching active contracts. Please try again later.");
+      setError(error.message);
     }
   }, [artisanId]);
 
@@ -383,8 +383,8 @@ const ActiveContract = () => {
                 View Work History
               </div>
             </div>
-            {error && <p>{error}</p>}
           </div>
+          {error && <p>{error}</p>}
         </div>
       </section>
     </>

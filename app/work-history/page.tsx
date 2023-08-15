@@ -33,7 +33,7 @@ const WorkHistory = () => {
       }
     } catch (error: any) {
       console.error("Error fetching active contracts:", error.message);
-      setError("Error fetching Work history. Please try again later.");
+      setError(error.message);
     }
   }, [artisanId]);
 
