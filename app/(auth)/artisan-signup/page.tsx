@@ -22,7 +22,7 @@ import {
 import supabase from "@/lib/supabase";
 import { occupations } from "@/components/occupations";
 import { InputNo } from "@/components/InputNo";
-import ConfirmEmail from "@/components/ConfirmEmail";
+import { useRouter } from "next/navigation";
 
 const ArtisanSignup = () => {
   const [registerArtisanDetail, setRegisterArtisanDetail] =
@@ -39,8 +39,8 @@ const ArtisanSignup = () => {
   const [error, setError] = useState<boolean>(false);
   const { toast } = useToast();
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [confrimEmailMessage, setConfirmEmailMessage] =
-    useState<boolean>(false);
+  const router = useRouter();
+
   const [inputValidity, setInputValidity] = useState({
     fullName: false,
     password: false,
@@ -107,7 +107,7 @@ const ArtisanSignup = () => {
             toast({
               description: "Signed Up successfully",
             });
-          setConfirmEmailMessage(true);
+          router.push("/personal-profile");
           console.log("User created successfully");
 
           try {
@@ -242,88 +242,88 @@ const ArtisanSignup = () => {
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
               Signup
             </h1>
-            {!confrimEmailMessage ? (
-              <form action="" onSubmit={handleRegister}>
-                <div className="grid w-full my-6 items-center gap-1.5">
-                  <Label htmlFor="fullname" className="text-base">
-                    Full Name
-                  </Label>
-                  <Input
-                    type="text"
-                    name="fullName"
-                    className={`w-full h-12 bg-[#ecebf382] text-base ${
-                      inputValidity.fullName ? "bg-[#fddddd]" : ""
-                    }`}
-                    placeholder="Enter your full name"
-                    value={registerArtisanDetail.fullName}
-                    onChange={(e) => handleInputChange(e, "fullName")}
-                    onBlur={() => handleInputBlur("fullName")}
-                  />
-                </div>
-                <div className="grid w-full my-6 items-center gap-1.5">
-                  <Label htmlFor="email" className="text-base">
-                    Email Address
-                  </Label>
-                  <Input
-                    type="email"
-                    name="email"
-                    className={`w-full h-12 bg-[#ecebf382] text-base ${
-                      inputValidity.email ? "bg-[#fddddd]" : ""
-                    }`}
-                    placeholder="Enter your email address"
-                    value={registerArtisanDetail.email}
-                    onChange={(e) => handleInputChange(e, "email")}
-                    onBlur={() => handleInputBlur("email")}
-                  />
-                </div>
-                <InputNo
-                  onValueChange={handleValueChange}
-                  onHandleBlur={handleInputBlur}
-                  phoneNoValidity={inputValidity.phoneNo}
+
+            <form action="" onSubmit={handleRegister}>
+              <div className="grid w-full my-6 items-center gap-1.5">
+                <Label htmlFor="fullname" className="text-base">
+                  Full Name
+                </Label>
+                <Input
+                  type="text"
+                  name="fullName"
+                  className={`w-full h-12 bg-[#ecebf382] text-base ${
+                    inputValidity.fullName ? "bg-[#fddddd]" : ""
+                  }`}
+                  placeholder="Enter your full name"
+                  value={registerArtisanDetail.fullName}
+                  onChange={(e) => handleInputChange(e, "fullName")}
+                  onBlur={() => handleInputBlur("fullName")}
                 />
-                <div className="w-full">
-                  <Label htmlFor="occupation" className="text-base">
-                    Occupation
-                  </Label>
-                  <Popover open={open} onOpenChange={setOpen}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={open}
-                        className={`w-full h-12 justify-between text-base bg-[#ecebf382] ${
-                          inputValidity.occupation ? "bg-[#fddddd]" : ""
-                        }`}
-                      >
-                        {value
-                          ? occupations.find(
-                              (occupation) => occupation.value === value
-                            )?.label
-                          : "Select Occupation..."}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="min-w-[300px] p-0 max-h-[10rem] overflow-y-scroll">
-                      <Command>
-                        <CommandInput placeholder="Search occupation..." />
-                        <CommandEmpty>No occupation found.</CommandEmpty>
-                        <CommandGroup>
-                          {occupations.map((occupation) => (
-                            <CommandItem
-                              key={occupation.value}
-                              onSelect={(currentValue) => {
-                                setValue(
-                                  currentValue === value ? "" : currentValue
-                                );
-                                setRegisterArtisanDetail({
-                                  ...registerArtisanDetail,
-                                  occupation: currentValue,
-                                });
-                                setOpen(false);
-                              }}
-                            >
-                              <Check
-                                className={`
+              </div>
+              <div className="grid w-full my-6 items-center gap-1.5">
+                <Label htmlFor="email" className="text-base">
+                  Email Address
+                </Label>
+                <Input
+                  type="email"
+                  name="email"
+                  className={`w-full h-12 bg-[#ecebf382] text-base ${
+                    inputValidity.email ? "bg-[#fddddd]" : ""
+                  }`}
+                  placeholder="Enter your email address"
+                  value={registerArtisanDetail.email}
+                  onChange={(e) => handleInputChange(e, "email")}
+                  onBlur={() => handleInputBlur("email")}
+                />
+              </div>
+              <InputNo
+                onValueChange={handleValueChange}
+                onHandleBlur={handleInputBlur}
+                phoneNoValidity={inputValidity.phoneNo}
+              />
+              <div className="w-full">
+                <Label htmlFor="occupation" className="text-base">
+                  Occupation
+                </Label>
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={open}
+                      className={`w-full h-12 justify-between text-base bg-[#ecebf382] ${
+                        inputValidity.occupation ? "bg-[#fddddd]" : ""
+                      }`}
+                    >
+                      {value
+                        ? occupations.find(
+                            (occupation) => occupation.value === value
+                          )?.label
+                        : "Select Occupation..."}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="min-w-[300px] p-0 max-h-[10rem] overflow-y-scroll">
+                    <Command>
+                      <CommandInput placeholder="Search occupation..." />
+                      <CommandEmpty>No occupation found.</CommandEmpty>
+                      <CommandGroup>
+                        {occupations.map((occupation) => (
+                          <CommandItem
+                            key={occupation.value}
+                            onSelect={(currentValue) => {
+                              setValue(
+                                currentValue === value ? "" : currentValue
+                              );
+                              setRegisterArtisanDetail({
+                                ...registerArtisanDetail,
+                                occupation: currentValue,
+                              });
+                              setOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={`
                                 mr-2 h-4 w-4
                                 ${
                                   value === occupation.value
@@ -331,56 +331,53 @@ const ArtisanSignup = () => {
                                     : "opacity-0"
                                 }
                               `}
-                              />
-                              {occupation.label}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                </div>
-                <div className="grid w-full my-6 items-center gap-1.5">
-                  <Label htmlFor="password" className="text-base">
-                    Password
-                  </Label>
-                  <Input
-                    type="password"
-                    name="password"
-                    className={`w-full h-12 text-base bg-[#ecebf382] ${
-                      inputValidity.password ? "bg-[#fddddd]" : ""
-                    }`}
-                    placeholder="Enter your password"
-                    value={registerArtisanDetail.password}
-                    onChange={(e) => handleInputChange(e, "password")}
-                    onBlur={() => handleInputBlur("password")}
-                  />
-                </div>
-                <div className="grid w-full my-6 items-center gap-1.5">
-                  <Label htmlFor="confirmPassword" className="text-base">
-                    Confirm Password
-                  </Label>
-                  <Input
-                    type="password"
-                    name="confirmPassword"
-                    className={`w-full h-12 text-base bg-[#ecebf382] ${
-                      inputValidity.password ? "bg-[#fddddd]" : ""
-                    }`}
-                    placeholder="Confirm your password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                  />
-                </div>
-                <Button
-                  type="submit"
-                  className="bg-[#6272B9] text-base text-white w-full text-center"
-                >
-                  {loading ? "Signing Up" : "Sign Up"}
-                </Button>
-              </form>
-            ) : (
-              <ConfirmEmail emailName={registerArtisanDetail.email} />
-            )}
+                            />
+                            {occupation.label}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
+              <div className="grid w-full my-6 items-center gap-1.5">
+                <Label htmlFor="password" className="text-base">
+                  Password
+                </Label>
+                <Input
+                  type="password"
+                  name="password"
+                  className={`w-full h-12 text-base bg-[#ecebf382] ${
+                    inputValidity.password ? "bg-[#fddddd]" : ""
+                  }`}
+                  placeholder="Enter your password"
+                  value={registerArtisanDetail.password}
+                  onChange={(e) => handleInputChange(e, "password")}
+                  onBlur={() => handleInputBlur("password")}
+                />
+              </div>
+              <div className="grid w-full my-6 items-center gap-1.5">
+                <Label htmlFor="confirmPassword" className="text-base">
+                  Confirm Password
+                </Label>
+                <Input
+                  type="password"
+                  name="confirmPassword"
+                  className={`w-full h-12 text-base bg-[#ecebf382] ${
+                    inputValidity.password ? "bg-[#fddddd]" : ""
+                  }`}
+                  placeholder="Confirm your password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+              </div>
+              <Button
+                type="submit"
+                className="bg-[#6272B9] text-base text-white w-full text-center"
+              >
+                {loading ? "Signing Up" : "Sign Up"}
+              </Button>
+            </form>
           </div>
         </div>
       </div>

@@ -68,7 +68,49 @@ const Login = () => {
       setLoading(false);
     }
   };
-
+  const handleTestLogin = async (email: string, password: string) => {
+    try {
+      setLoading(true);
+      toast({
+        description: "Logging in...",
+      });
+      // Supabase Login with Email and password function
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+      if (error) {
+        throw error;
+      }
+      if (user) {
+        setLoading(false);
+        // Check if the user is an artisan or client
+        user &&
+          toast({
+            description: "Logged In successfully",
+          });
+        const occupationName = user?.user_metadata?.occupation_name;
+        if (occupationName) {
+          // If Artisan, go to the Artisan Profile Page
+          router.push("/personal-profile");
+        } else {
+          // If Client, go to the see all Artisans Page
+          router.push("/artisans");
+        }
+      }
+    } catch (error: any) {
+      console.log(error.message);
+      setError(true);
+      toast({
+        variant: "destructive",
+        description: error.message,
+      });
+      setLoading(false);
+    }
+  };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSignInDetails((prevState) => ({
@@ -149,7 +191,56 @@ const Login = () => {
                 {loading ? "Logging in.." : "Login"}
               </Button>
             </form>
-
+            <div className="grid grid-cols-3 gap-4">
+              <div
+                onClick={() => {
+                  handleTestLogin("testartisan1@gmail.com", "testartisan1");
+                }}
+                className="bg-[#6272B9] rounded-md py-2 text-white mt-4 text-base w-full text-center"
+              >
+                TestArtisan1
+              </div>
+              <div
+                onClick={() => {
+                  handleTestLogin("testartisan2@gmail.com", "testartisan2");
+                }}
+                className="bg-[#6272B9] rounded-md py-2 text-white mt-4 text-base w-full text-center"
+              >
+                TestArtisan2
+              </div>
+              <div
+                onClick={() => {
+                  handleTestLogin("testartisan3@gmail.com", "testartisan3");
+                }}
+                className="bg-[#6272B9] rounded-md py-2 text-white mt-4 text-base w-full text-center"
+              >
+                TestArtisan3
+              </div>
+              <div
+                onClick={() => {
+                  handleTestLogin("testartisan4@gmail.com", "testartisan4");
+                }}
+                className="bg-[#6272B9] rounded-md py-2 text-white mt-4 text-base w-full text-center"
+              >
+                TestArtisan4
+              </div>
+              <div
+                onClick={() => {
+                  handleTestLogin("testclient5@gmail.com", "testclient5");
+                }}
+                className="bg-[#6272B9] rounded-md py-2 text-white mt-4 text-base w-full text-center"
+              >
+                TestClient5
+              </div>
+              <div
+                onClick={() => {
+                  handleTestLogin("testclient6@gmail.com", "testclient6");
+                }}
+                className="bg-[#6272B9] rounded-md py-2 text-white mt-4 text-base w-full text-center"
+              >
+                TestClient6
+              </div>
+            </div>
             <div className="mt-4 text-base justify-center space-x-2 flex">
               <p>{"Don't"} have an account? </p>
               <Link href="/signup" className="underline text-[#6272B9]">
