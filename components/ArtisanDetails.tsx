@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "./ui/button";
@@ -45,26 +45,25 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
   const [requestContent, setRequestContent] = useState<string>("");
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
 
-  useEffect(() => {
-    async function checkExistingBooking() {
-      try {
-        const { data, error } = await supabase
-          .from("bookings")
-          .select("*")
-          .eq("artisan_id", artisanId);
+  const checkExistingBooking = useCallback(async () => {
+    try {
+      const { data, error } = await supabase
+        .from("bookings")
+        .select("*")
+        .eq("artisan_id", artisanId);
 
-        if (error) {
-          throw error;
-        }
-
-        setExistingBooking(data);
-      } catch (error: any) {
-        console.error("Error checking existing booking:", error.message);
+      if (error) {
+        throw error;
       }
-    }
 
-    checkExistingBooking();
+      setExistingBooking(data);
+    } catch (error: any) {
+      console.error("Error checking existing booking:", error.message);
+    }
   }, [artisanId]);
+  useEffect(() => {
+    checkExistingBooking();
+  }, [checkExistingBooking]);
 
   useEffect(() => {
     if (existingBooking && existingBooking.length > 0) {
@@ -120,7 +119,7 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
         ...(existingBooking[0]?.pending_contract || []),
         clientDetails,
       ];
-      setRequestContent("Request Sent");
+
       const { data: updatedBooking, error: bookingError } = await supabase
         .from("bookings")
         .upsert({
@@ -137,6 +136,7 @@ const ArtisanDetails: React.FC<ArtisanProps> = ({
         setLoading(false);
         setRequestContent("Request Sent");
         console.log("Booking added/updated successfully:", updatedBooking);
+        checkExistingBooking();
         return updatedBooking;
       }
     } catch (error: any) {
