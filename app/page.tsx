@@ -26,13 +26,13 @@ export default function Home() {
               <div className="">
                 <Link
                   href="/login"
-                  className="mr-4 border border-[#6272B9] hover:bg-[#6272B9] transition duration-700 ease-in rounded-md py-2 px-4 text-base md:text-lg"
+                  className="mr-4 border border-[#6272B9] hover:text-white hover:bg-[#6272B9] transition duration-700 ease-in rounded-md py-2 px-4 text-base md:text-lg"
                 >
                   Login
                 </Link>
                 <Link
                   href="/signup"
-                  className="rounded-md bg-[#6272B9] hover:bg-transparent border hover:border-[#6272B9] transition duration-700 ease-in py-2 px-6 text-base md:text-lg"
+                  className="rounded-md bg-[#6272B9] hover:bg-transparent text-white hover:text-black border hover:border-[#6272B9] transition duration-700 ease-in py-2 px-6 text-base md:text-lg"
                 >
                   Get Started
                 </Link>

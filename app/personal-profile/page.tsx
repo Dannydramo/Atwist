@@ -49,6 +49,21 @@ const ArtisanProfile = () => {
     getUser();
   }, [router]);
 
+  const handleSignOut = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        throw error;
+      }
+      if (!error) {
+        router.push("/login");
+        console.log("SignOut successful");
+      }
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <section className="w-[95%] sm:w-[90%] md:w-[85%] lg:w-[75%] mx-auto max-w-[1600px]">
       <div className="bg-white my-4 h-[100%] sm:min-h-[calc(90vh-80px)] rounded-xl p-4 sm:p-8 md:p-12">
@@ -144,6 +159,12 @@ const ArtisanProfile = () => {
             </div>
 
             <Proof userId={user?.id} />
+            <Button
+              onClick={handleSignOut}
+              className="border text-base  bg-red-500 mt-6  text-black outline-none border-red-500 rounded-[20px] text-center"
+            >
+              Signout
+            </Button>
           </div>
         ) : (
           <div>
